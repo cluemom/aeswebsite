@@ -772,6 +772,7 @@
     renderSlotBubbles();
   }
 
-  document.addEventListener('DOMContentLoaded', initAuth);
+  // Script is at bottom of body — DOM is ready, call directly
+  initAuth();
 
 })();
