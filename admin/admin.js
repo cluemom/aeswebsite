@@ -1,7 +1,7 @@
 /**
  * admin.js — AES Content Manager
  * Save/Cancel editing model + named snapshots backup system.
- * Persists via Netlify Blobs (live) with localStorage fallback (local dev).
+ * Publishes via GitHub API → triggers Render redeploy.
  */
 (function () {
   'use strict';
@@ -9,10 +9,12 @@
   const STORAGE_KEY   = 'aes_content';
   const SLOTS_KEY     = 'aes_slots';
   const NUM_SLOTS     = 8;
-  const GH_KEY        = 'aes_cms_token';   // CMS API token (optional)
+  const GH_KEY        = 'aes_cms_token';   // GitHub PAT (stored in localStorage)
   const DEV_AUTH_KEY  = 'aes_dev_auth';
   const DEV_PASSWORD  = 'aesadmin2025';
-  const API           = '/.netlify/functions/cms-api';
+  const GH_OWNER      = 'cluemom';
+  const GH_REPO       = 'aeswebsite';
+  const GH_FILE       = 'content.json';
 
 
   let _content      = {};   // live working copy
@@ -192,10 +194,10 @@
             { type: 'url',      label: 'Website',        path: 'global.website' },
             { type: 'textarea', label: 'Footer Tagline', path: 'global.tagline', rows: 2 },
           ]},
-        { id: 'api_settings', label: 'API / Auth Settings', preview: null,
+        { id: 'api_settings', label: 'API Settings', preview: null,
           fields: [
-            { type: 'password', label: 'CMS Token', path: '__token',
-              hint: 'Match the CMS_TOKEN env var set in your Netlify site settings.' },
+            { type: 'password', label: 'GitHub Token', path: '__token',
+              hint: 'Fine-grained PAT with Contents read+write on cluemom/aeswebsite. Required to Publish.' },
           ]},
       ]
     },
@@ -232,42 +234,28 @@
   // AUTH
   // ═══════════════════════════════════════════════════════════════════════════
   function initAuth() {
-    var netlifyAvailable = typeof netlify !== 'undefined' && netlify.identity;
+    if (localStorage.getItem(DEV_AUTH_KEY) === 'true') { showEditor(); return; }
 
-    if (netlifyAvailable) {
-      netlify.identity.init();
-      document.getElementById('netlify-login-btn').addEventListener('click', function () {
-        netlify.identity.open();
-      });
-      netlify.identity.on('login',  function () { showEditor(); });
-      netlify.identity.on('logout', function () { showLogin(); });
-      if (netlify.identity.currentUser()) { showEditor(); return; }
-    } else {
-      // Dev fallback
-      document.getElementById('dev-login-form').style.display = 'block';
-      document.getElementById('netlify-login-btn').style.display = 'none';
-      if (localStorage.getItem(DEV_AUTH_KEY) === 'true') { showEditor(); return; }
+    var loginBtn = document.getElementById('login-btn');
+    var pw       = document.getElementById('login-password');
 
-      var devBtn = document.getElementById('dev-login-btn');
-      var devPw  = document.getElementById('dev-password');
-
-      devBtn.addEventListener('click', function () {
-        if (devPw.value === DEV_PASSWORD) {
-          localStorage.setItem(DEV_AUTH_KEY, 'true');
-          showEditor();
-        } else {
-          showToast('Incorrect password', 'error');
-          devPw.classList.add('shake');
-          setTimeout(function () { devPw.classList.remove('shake'); }, 500);
-        }
-      });
-      devPw.addEventListener('keydown', function (e) { if (e.key === 'Enter') devBtn.click(); });
+    function attempt() {
+      if (pw.value === DEV_PASSWORD) {
+        localStorage.setItem(DEV_AUTH_KEY, 'true');
+        showEditor();
+      } else {
+        showToast('Incorrect password', 'error');
+        pw.classList.add('shake');
+        setTimeout(function () { pw.classList.remove('shake'); }, 500);
+        pw.value = '';
+        pw.focus();
+      }
     }
 
+    loginBtn.addEventListener('click', attempt);
+    pw.addEventListener('keydown', function (e) { if (e.key === 'Enter') attempt(); });
+
     document.getElementById('logout-btn').addEventListener('click', function () {
-      if (netlifyAvailable) {
-        netlify.identity.logout();
-      }
       localStorage.removeItem(DEV_AUTH_KEY);
       window.location.href = '../index.html';
     });
@@ -287,24 +275,13 @@
   // CONTENT LOAD / SAVE / CANCEL
   // ═══════════════════════════════════════════════════════════════════════════
   async function loadContent() {
-    // 1. Try Netlify function
-    try {
-      var res = await fetch(API + '?key=content', {
-        headers: getCMSToken() ? { 'Authorization': 'Bearer ' + getCMSToken() } : {}
-      });
-      if (res.ok) {
-        var data = await res.json();
-        if (data && typeof data === 'object' && !data.error) return data;
-      }
-    } catch (e) {}
-
-    // 2. localStorage
+    // 1. localStorage — persists admin edits across sessions
     try {
       var stored = localStorage.getItem(STORAGE_KEY);
       if (stored) { var p = JSON.parse(stored); if (p) return p; }
     } catch (e) {}
 
-    // 3. Static file
+    // 2. Static content.json
     try {
       var r = await fetch('../content.json');
       if (r.ok) return await r.json();
@@ -357,14 +334,6 @@
 
   function persistSlots(slots) {
     localStorage.setItem(SLOTS_KEY, JSON.stringify(slots));
-    // Best-effort server sync
-    try {
-      fetch(API, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + getCMSToken() },
-        body: JSON.stringify({ key: 'slots', data: slots }),
-      });
-    } catch (e) {}
   }
 
   async function saveToSlot(index) {
@@ -378,20 +347,8 @@
     };
     persistSlots(slots);
 
-    // Push to live site (localStorage + Netlify function)
     localStorage.setItem(STORAGE_KEY, JSON.stringify(_content));
-    try {
-      var res = await fetch(API, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + getCMSToken() },
-        body: JSON.stringify({ key: 'content', data: _content }),
-      });
-      if (res.ok) {
-        showToast('Slot ' + (index + 1) + ' saved — site is live ✓', 'success');
-      } else { throw new Error(); }
-    } catch (e) {
-      showToast('Slot ' + (index + 1) + ' saved locally ✓', 'success');
-    }
+    showToast('Slot ' + (index + 1) + ' saved ✓', 'success');
 
     _lastSaved = snap(_content);
     setUnsaved(false);
@@ -713,73 +670,60 @@
   // TOPBAR BUTTONS
   // ═══════════════════════════════════════════════════════════════════════════
   // ═══════════════════════════════════════════════════════════════════════════
-  // IMAGE UPLOAD
+  // IMAGE UPLOAD — URL only (paste an image URL or use Unsplash)
   // ═══════════════════════════════════════════════════════════════════════════
-  const UPLOAD_API = '/.netlify/functions/cms-upload';
-
-  function fileToBase64(file) {
-    return new Promise(function (resolve, reject) {
-      var reader = new FileReader();
-      reader.onload  = function () { resolve(reader.result.split(',')[1]); };
-      reader.onerror = reject;
-      reader.readAsDataURL(file);
-    });
-  }
-
-  async function uploadImage(file, urlInput, label) {
-    var origHTML = label.innerHTML;
-    label.innerHTML = '<span style="pointer-events:none;">Uploading…</span>';
-
-    try {
-      var base64 = await fileToBase64(file);
-      var res    = await fetch(UPLOAD_API, {
-        method:  'POST',
-        headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + getCMSToken() },
-        body:    JSON.stringify({ filename: file.name, type: file.type, data: base64 }),
-      });
-
-      if (!res.ok) throw new Error('Server error ' + res.status);
-      var result = await res.json();
-      if (!result.url) throw new Error('No URL returned');
-
-      // Update the URL field and trigger live preview
-      urlInput.value = result.url;
-      urlInput.dispatchEvent(new Event('input'));
-      showToast('Image uploaded ✓', 'success');
-
-    } catch (e) {
-      if (e.message.includes('503') || e.message.includes('storage_unavailable') || e.message.includes('fetch')) {
-        showToast('Upload requires Netlify — on local dev, paste an image URL instead', 'error');
-      } else {
-        showToast('Upload failed: ' + e.message, 'error');
-      }
-    }
-
-    label.innerHTML = origHTML;
+  function uploadImage(file, urlInput, label) {
+    showToast('File upload not available — paste an image URL instead', 'info');
   }
 
   async function publishContent() {
+    var token = getCMSToken();
+    if (!token) {
+      showToast('No GitHub token set — add it in Global → API Settings', 'error');
+      return;
+    }
+
     var btn = document.getElementById('publish-btn');
     btn.disabled = true;
     btn.textContent = 'Publishing…';
 
-    // Always sync to localStorage for instant local preview
+    // Sync to localStorage for instant local preview
     localStorage.setItem(STORAGE_KEY, JSON.stringify(_content));
 
     try {
-      var res = await fetch(API, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + getCMSToken() },
-        body: JSON.stringify({ key: 'content', data: _content }),
+      var apiBase = 'https://api.github.com/repos/' + GH_OWNER + '/' + GH_REPO + '/contents/' + GH_FILE;
+      var headers = {
+        'Accept': 'application/vnd.github+json',
+        'Authorization': 'Bearer ' + token,
+        'X-GitHub-Api-Version': '2022-11-28',
+      };
+
+      // Get current file SHA (required for update)
+      var getRes = await fetch(apiBase, { headers: headers });
+      if (getRes.status === 401) throw new Error('GitHub token invalid or expired — update it in Global → API Settings');
+      if (!getRes.ok) throw new Error('Could not read content.json from GitHub (' + getRes.status + ')');
+      var fileData = await getRes.json();
+      var sha = fileData.sha;
+
+      // Commit updated content.json
+      var newContent = btoa(unescape(encodeURIComponent(JSON.stringify(_content, null, 2))));
+      var putRes = await fetch(apiBase, {
+        method: 'PUT',
+        headers: Object.assign({ 'Content-Type': 'application/json' }, headers),
+        body: JSON.stringify({
+          message: 'Update content.json via CMS',
+          content: newContent,
+          sha: sha,
+        }),
       });
-      if (res.status === 401) throw new Error('401 — Token mismatch. Check that the CMS Token in Global → API/Auth Settings matches the CMS_TOKEN env var in Netlify.');
-      if (res.status === 503) { var d503 = await res.json().catch(function(){return{};}); throw new Error('503 — Blobs error: ' + (d503.message || 'unknown')); }
-      if (!res.ok) throw new Error('Server error ' + res.status);
-      var result = await res.json();
-      if (!result.ok) throw new Error('Unexpected response from server');
+      if (!putRes.ok) {
+        var errData = await putRes.json().catch(function(){ return {}; });
+        throw new Error('GitHub commit failed: ' + (errData.message || putRes.status));
+      }
+
       _lastSaved = snap(_content);
       setUnsaved(false);
-      showToast('Published ✓ — changes are live', 'success');
+      showToast('Published ✓ — Render redeploy triggered', 'success');
     } catch (e) {
       console.error('[publish]', e.message);
       showToast(e.message, 'error');

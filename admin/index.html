@@ -6,13 +6,11 @@
   <title>AES Admin — Content Manager</title>
   <meta name="robots" content="noindex, nofollow" />
   <link rel="stylesheet" href="admin.css" />
-  <!-- Netlify Identity Widget -->
-  <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
 </head>
 <body>
 
   <!-- ═══════════════════════════════════════════════════════════════════════
-       LOGIN SCREEN — shown when user is not authenticated
+       LOGIN SCREEN
   ═══════════════════════════════════════════════════════════════════════ -->
   <div id="login-screen">
     <div class="login-card">
@@ -22,25 +20,16 @@
       <h1 class="login-title">Content Manager</h1>
       <p class="login-subtitle">Sign in to manage your site content</p>
 
-      <!-- Netlify Identity button renders here -->
-      <button id="netlify-login-btn" class="btn-login" type="button">
+      <input
+        id="login-password"
+        type="password"
+        class="dev-password-input"
+        placeholder="Enter password"
+        autocomplete="current-password"
+      />
+      <button id="login-btn" class="btn-login" type="button">
         Sign In
       </button>
-
-      <!-- Dev mode bypass (shown only when netlify identity is unavailable) -->
-      <div id="dev-login-form" class="dev-login-form" style="display:none;">
-        <div class="dev-badge">Developer Mode</div>
-        <input
-          id="dev-password"
-          type="password"
-          class="dev-password-input"
-          placeholder="Enter dev password"
-          autocomplete="current-password"
-        />
-        <button id="dev-login-btn" class="btn-login" type="button">
-          Enter Dev Mode
-        </button>
-      </div>
 
       <p class="login-footer">Allied Event Service &copy; 2025</p>
     </div>
@@ -114,10 +103,10 @@
             <p>Select a section from the left sidebar to start editing your site content. Click any numbered bubble at the top to save a snapshot. Click a filled bubble to restore it.</p>
             <div class="welcome-tips">
               <div class="tip">
-                <strong>Save Bubble</strong> — Click an empty bubble to save the current state there. The site updates live.
+                <strong>Save Bubble</strong> — Click an empty bubble to save the current state. Changes preview instantly.
               </div>
               <div class="tip">
-                <strong>Publish</strong> — Pushes content.json to your GitHub repo, triggering a Netlify rebuild.
+                <strong>Publish</strong> — Commits content.json to GitHub, triggering a Render redeploy. Requires a GitHub token in Global → API Settings.
               </div>
             </div>
           </div>

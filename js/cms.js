@@ -1,6 +1,6 @@
 /**
  * cms.js — AES Content Loader
- * Priority: localStorage (instant admin preview) → Netlify function → content.json
+ * Priority: localStorage (instant admin preview) → content.json
  *
  * data-cms="path.to.value"    → sets innerHTML
  * data-cms-bg="path.to.value" → sets style.backgroundImage
@@ -11,7 +11,6 @@
   'use strict';
 
   const STORAGE_KEY = 'aes_content';
-  const API         = '/.netlify/functions/cms-api?key=content';
 
   function getPath(obj, path) {
     return path.split('.').reduce(function (acc, k) {
@@ -29,7 +28,7 @@
   }
 
   async function getContent() {
-    // 1. localStorage — admin edits appear instantly
+    // 1. localStorage — admin edits appear instantly after saving a slot
     try {
       var stored = localStorage.getItem(STORAGE_KEY);
       if (stored) {
@@ -38,16 +37,7 @@
       }
     } catch (e) {}
 
-    // 2. Netlify Blobs via function (live site, all visitors)
-    try {
-      var res = await fetch(API);
-      if (res.ok) {
-        var data = await res.json();
-        if (data && typeof data === 'object') return data;
-      }
-    } catch (e) {}
-
-    // 3. Static content.json fallback
+    // 2. Static content.json (served by Render)
     try {
       var r = await fetch('/content.json');
       if (r.ok) return await r.json();
