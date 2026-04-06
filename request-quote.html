@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Allied Event Service – Request a Quote</title>
+  <meta name="description" content="Submit an RFP or request a quote from Allied Event Service for your next event." />
+  <link rel="stylesheet" href="/css/style.css" />
+  <script src="/js/cms.js"></script>
+</head>
+<body>
+
+  <!-- Scroll Progress Bar -->
+  <div id="scroll-progress"></div>  <!-- ═══ NAVIGATION ═══════════════════════════════════════════════════════════ -->
+  <nav class="site-nav scrolled" id="site-nav">
+    <div class="nav-inner">
+      <a href="index.html" class="nav-logo-img">
+        <img src="/images/aes-logo.png" alt="Allied Event Service" />
+        <span class="nav-logo-name">Allied Event Service</span>
+      </a>
+      <ul class="nav-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="company.html">Company</a></li>
+        <li><a href="client-solutions.html">Client Solutions</a></li>
+        <li><a href="contact.html">Contact</a></li>
+        <li><a href="request-quote.html" class="nav-cta active">Request Quote</a></li>
+      </ul>
+      <button class="nav-hamburger" id="nav-hamburger" aria-label="Menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- Mobile Nav -->
+  <nav class="nav-mobile" id="nav-mobile">
+    <a href="index.html">Home</a>
+    <a href="company.html">Company</a>
+    <a href="client-solutions.html">Client Solutions</a>
+    <a href="contact.html">Contact</a>
+    <a href="request-quote.html" class="nav-cta">Request Quote</a>
+  </nav>
+
+  <!-- ═══ PAGE HERO ════════════════════════════════════════════════════════════ -->
+  <section class="page-hero">
+    <div class="page-hero-inner">
+      <p class="eyebrow">Get Started</p>
+      <h1>Request a <span class="grad-text">Quote</span></h1>
+      <p class="lead">Send us your project details and we'll get back to you within 24 hours.</p>
+    </div>
+  </section>
+
+  <!-- ═══ FORM ══════════════════════════════════════════════════════════════════ -->
+  <section class="section">
+    <div class="container" style="max-width: 860px;">
+
+      <div class="form-wrap reveal">
+        <!--
+          FORM SETUP OPTIONS:
+          Option A (recommended) – Formspree: replace action with your Formspree endpoint
+            e.g. action="https://formspree.io/f/YOUR_FORM_ID"
+          Option B – Netlify Forms: add netlify attribute and name="quote-form"
+          Option C – mailto fallback (opens mail client):
+            action="mailto:Info@alliedev.co" enctype="text/plain"
+        -->
+        <form
+          id="quoteForm"
+          action="https://formspree.io/f/YOUR_FORM_ID"
+          method="POST"
+          enctype="multipart/form-data"
+          novalidate
+        >
+          <div class="form-grid">
+
+            <!-- Proposal Deadline -->
+            <div class="form-group">
+              <label for="deadline">Proposal Deadline</label>
+              <input class="form-input" type="date" id="deadline" name="deadline" />
+            </div>
+
+            <!-- Event Name -->
+            <div class="form-group">
+              <label for="eventName">Event Name</label>
+              <input class="form-input" type="text" id="eventName" name="event_name" placeholder="Your event name" />
+            </div>
+
+            <!-- File Upload -->
+            <div class="form-group full">
+              <label for="fileUpload">Supporting Documents</label>
+              <div style="display: flex; align-items: center; gap: 14px;">
+                <label class="form-upload-label" for="fileUpload">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+                  Upload File
+                </label>
+                <input type="file" id="fileUpload" name="attachment" style="display: none;" />
+                <span id="fileName" style="font-size: 13px; color: var(--text-dimmer);"></span>
+              </div>
+            </div>
+
+            <!-- Comments -->
+            <div class="form-group full">
+              <label for="comments">Questions or Comments About Your Proposal</label>
+              <textarea class="form-textarea" id="comments" name="comments" rows="4" placeholder="Tell us about your event, goals, and any specific requirements..."></textarea>
+            </div>
+
+            <div class="form-divider"></div>
+
+            <!-- Organization -->
+            <div class="form-group full">
+              <label for="organization">Association or Organization <span class="required">*</span></label>
+              <input class="form-input" type="text" id="organization" name="organization" placeholder="Your company or organization name" required />
+            </div>
+
+            <!-- Contact Person -->
+            <div class="form-group">
+              <label for="contactFirst">First Name <span class="required">*</span></label>
+              <input class="form-input" type="text" id="contactFirst" name="contact_first" placeholder="First" required />
+            </div>
+            <div class="form-group">
+              <label for="contactLast">Last Name <span class="required">*</span></label>
+              <input class="form-input" type="text" id="contactLast" name="contact_last" placeholder="Last" required />
+            </div>
+
+            <!-- Title -->
+            <div class="form-group">
+              <label for="title">Title / Role</label>
+              <input class="form-input" type="text" id="title" name="title" placeholder="Your job title" />
+            </div>
+
+            <!-- Email -->
+            <div class="form-group">
+              <label for="email">Email Address <span class="required">*</span></label>
+              <input class="form-input" type="email" id="email" name="email" placeholder="you@company.com" required />
+            </div>
+
+            <!-- Address -->
+            <div class="form-group full">
+              <label for="address">Address</label>
+              <input class="form-input" type="text" id="address" name="address" placeholder="Street Address" style="margin-bottom: 8px;" />
+              <input class="form-input" type="text" name="address2" placeholder="Address Line 2 (optional)" style="margin-bottom: 8px;" />
+              <div class="address-grid">
+                <input class="form-input" type="text" name="city" placeholder="City" />
+                <input class="form-input" type="text" name="state" placeholder="State" />
+                <input class="form-input" type="text" name="zip" placeholder="ZIP" />
+              </div>
+            </div>
+
+            <!-- Website -->
+            <div class="form-group full">
+              <label for="website">Website</label>
+              <input class="form-input" type="url" id="website" name="website" placeholder="https://yourcompany.com" />
+            </div>
+
+            <!-- Submit -->
+            <div class="form-submit-row">
+              <p id="quoteMsg" class="form-msg"></p>
+              <button type="submit" class="btn-primary">
+                Send Request
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+              </button>
+            </div>
+
+          </div><!-- /form-grid -->
+        </form>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ═══ FOOTER ════════════════════════════════════════════════════════════════ -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-inner">
+        <div class="footer-brand">
+          <a href="index.html" class="footer-logo-img"><img src="/images/aes-logo.png" alt="Allied Event Service" />
+        <span class="nav-logo-name">Allied Event Service</span></a>
+          <p>Professional audio visual production and event management services — nationwide.</p>
+          <p data-cms="global.phone">(302) 316-5055</p>
+        </div>
+        <div class="footer-col">
+          <h4>Company</h4>
+          <ul>
+            <li><a href="company.html">About Us</a></li>
+            <li><a href="company.html#team">Our Team</a></li>
+            <li><a href="company.html#clients">Clients</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>Services</h4>
+          <ul>
+            <li><a href="client-solutions.html">Client Solutions</a></li>
+            <li><a href="client-solutions.html#av">Audio Visual</a></li>
+            <li><a href="client-solutions.html#digital">Digital Services</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>Contact</h4>
+          <ul>
+            <li><a href="contact.html">Contact Us</a></li>
+            <li><a href="request-quote.html">Request Quote</a></li>
+            <li><a href="https://aesbooking.us" target="_blank" rel="noopener">Team Portal</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2025 Allied Event Service. All rights reserved.</p>
+        <a href="privacy-policy.html">Privacy Policy</a>
+      </div>
+    </div>
+  </footer>
+
+  <script src="/js/main.js"></script>
+</body>
+</html>

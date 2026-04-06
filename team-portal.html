@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Allied Event Service – Team Portal</title>
+  <meta name="description" content="Allied Event Service team member login portal." />
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+  <!-- ═══ NAVIGATION ═══════════════════════════════════════════════════════════ -->
+  <nav class="site-nav nav-solid">
+    <div class="nav-inner">
+      <a href="index.html" class="nav-logo-img"><img src="images/aes-logo.png" alt="Allied Event Service" /></a>
+      <ul class="nav-links">
+        <li><a href="index.html"            class="nav-link">Home</a></li>
+        <li><a href="company.html"          class="nav-link">Company</a></li>
+        <li><a href="client-solutions.html" class="nav-link">Client Solutions</a></li>
+        <li><a href="contact.html"          class="nav-link">Contact</a></li>
+        <li><a href="request-quote.html"    class="nav-cta">Request Quote</a></li>
+      </ul>
+      <button class="nav-toggle" aria-label="Open menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- Mobile Nav -->
+  <div class="mobile-nav" role="dialog" aria-modal="true">
+    <button class="mobile-nav-close" aria-label="Close menu">&times;</button>
+    <a href="index.html"            class="nav-link">Home</a>
+    <a href="company.html"          class="nav-link">Company</a>
+    <a href="client-solutions.html" class="nav-link">Client Solutions</a>
+    <a href="contact.html"          class="nav-link">Contact</a>
+    <a href="request-quote.html"    class="nav-link">Request Quote</a>
+  </div>
+
+  <!-- ═══ LOGIN ════════════════════════════════════════════════════════════════ -->
+  <section class="login-section">
+    <div class="login-box">
+      <h1>Login</h1>
+
+      <!-- NOTE: This form requires backend authentication (PHP/Node/etc.) to function.
+           Connect to your server-side auth handler by changing the action attribute.
+           Do NOT hardcode credentials in this file for a live site. -->
+      <form id="loginForm" action="#" method="POST" novalidate>
+        <div class="login-field">
+          <label for="username">Username or E-mail</label>
+          <input type="text" id="username" name="username" placeholder="Root" required autocomplete="username" />
+        </div>
+        <div class="login-field">
+          <label for="password">Password</label>
+          <input type="password" id="password" name="password" placeholder="••••••••" required autocomplete="current-password" />
+        </div>
+        <label class="login-remember">
+          <input type="checkbox" name="remember" />
+          Keep me signed in
+        </label>
+        <button type="submit" class="login-btn">Login</button>
+        <p id="loginMsg" style="margin-top:12px; font-size:13px;"></p>
+        <a href="#" class="login-forgot">Forgot your password?</a>
+      </form>
+    </div>
+  </section>
+
+  <!-- ═══ FOOTER ════════════════════════════════════════════════════════════════ -->
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <div class="footer-logo">
+        <a href="index.html" class="nav-logo-img footer-logo-img"><img src="images/aes-logo.png" alt="Allied Event Service" /></a>
+      </div>
+      <div class="footer-contact">
+        <p class="footer-col-title">Contact</p>
+        <p>Phone: Noel Samaniego <a href="tel:4077296000">407-729-6000</a></p>
+        <p>Juan Rivera <a href="tel:4074961306">407-496-1306</a></p>
+        <p>E-Mail: <a href="mailto:Info@alliedev.co">Info@alliedev.co</a></p>
+      </div>
+      <div class="footer-links">
+        <a href="privacy-policy.html">Privacy Policy</a>
+        <a href="https://aesbooking.us" target="_blank" rel="noopener">Team Portal</a>
+      </div>
+      <div class="footer-copy">
+        &copy; 2025 Allied Event Service. All Rights Reserved.<br />
+        Any third party trademarks remain the property of their respective owners.
+      </div>
+    </div>
+  </footer>
+
+  <script src="js/main.js"></script>
+</body>
+</html>

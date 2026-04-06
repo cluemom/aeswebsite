@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AES Admin — Content Manager</title>
+  <meta name="robots" content="noindex, nofollow" />
+  <link rel="stylesheet" href="admin.css" />
+  <!-- Netlify Identity Widget -->
+  <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
+</head>
+<body>
+
+  <!-- ═══════════════════════════════════════════════════════════════════════
+       LOGIN SCREEN — shown when user is not authenticated
+  ═══════════════════════════════════════════════════════════════════════ -->
+  <div id="login-screen">
+    <div class="login-card">
+      <div class="login-logo">
+        <img src="../images/aes-logo.png" alt="Allied Event Service" />
+      </div>
+      <h1 class="login-title">Content Manager</h1>
+      <p class="login-subtitle">Sign in to manage your site content</p>
+
+      <!-- Netlify Identity button renders here -->
+      <button id="netlify-login-btn" class="btn-login" type="button">
+        Sign In
+      </button>
+
+      <!-- Dev mode bypass (shown only when netlify identity is unavailable) -->
+      <div id="dev-login-form" class="dev-login-form" style="display:none;">
+        <div class="dev-badge">Developer Mode</div>
+        <input
+          id="dev-password"
+          type="password"
+          class="dev-password-input"
+          placeholder="Enter dev password"
+          autocomplete="current-password"
+        />
+        <button id="dev-login-btn" class="btn-login" type="button">
+          Enter Dev Mode
+        </button>
+      </div>
+
+      <p class="login-footer">Allied Event Service &copy; 2025</p>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════════════════════════
+       EDITOR APP — shown after authentication
+  ═══════════════════════════════════════════════════════════════════════ -->
+  <div id="editor-app" style="display:none;">
+
+    <!-- ── SIDEBAR ────────────────────────────────────────────────────── -->
+    <aside id="sidebar">
+      <div class="sidebar-header">
+        <img src="../images/aes-logo.png" alt="AES" class="sidebar-logo" />
+        <span class="sidebar-title">Admin</span>
+      </div>
+
+      <nav class="sidebar-nav" id="sidebar-nav">
+        <!-- Dynamically populated by admin.js -->
+      </nav>
+
+      <div class="sidebar-footer">
+        <button id="logout-btn" class="sidebar-logout">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+          Logout
+        </button>
+        <p class="sidebar-version">AES CMS v1.0</p>
+      </div>
+    </aside>
+
+    <!-- ── MAIN AREA ──────────────────────────────────────────────────── -->
+    <div class="editor-main-wrap">
+
+      <!-- Top bar -->
+      <header class="editor-topbar" id="editor-topbar">
+        <div class="topbar-left">
+          <button id="sidebar-toggle" class="sidebar-toggle-btn" aria-label="Toggle sidebar">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+          </button>
+          <h2 class="topbar-section-title" id="topbar-section-title">Select a section</h2>
+          <span class="unsaved-badge" id="unsaved-badge" style="display:none;">Unsaved changes</span>
+        </div>
+        <div class="topbar-actions">
+          <a href="../index.html" target="_blank" class="btn-preview">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+            Preview
+          </a>
+          <button id="cancel-btn" class="btn-cancel" style="display:none;">Discard</button>
+          <button id="publish-btn" class="btn-publish">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 16 12 12 8 16"/><line x1="12" y1="12" x2="12" y2="21"/><path d="M20.39 18.39A5 5 0 0 0 18 9h-1.26A8 8 0 1 0 3 16.3"/></svg>
+            Publish
+          </button>
+        </div>
+      </header>
+
+      <!-- ── SLOT BAR ──────────────────────────────────────────────────────── -->
+      <div class="slot-bar" id="slot-bar">
+        <span class="slot-bar-label">Saves</span>
+        <div class="slot-bubbles" id="slot-bubbles"></div>
+      </div>
+
+      <!-- Editor content -->
+      <main class="editor-content">
+        <div id="editor-main">
+          <!-- Welcome state when no section is selected -->
+          <div class="editor-welcome" id="editor-welcome">
+            <div class="welcome-icon">
+              <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+            </div>
+            <h3>Welcome to the AES Content Manager</h3>
+            <p>Select a section from the left sidebar to start editing your site content. Click any numbered bubble at the top to save a snapshot. Click a filled bubble to restore it.</p>
+            <div class="welcome-tips">
+              <div class="tip">
+                <strong>Save Bubble</strong> — Click an empty bubble to save the current state there. The site updates live.
+              </div>
+              <div class="tip">
+                <strong>Publish</strong> — Pushes content.json to your GitHub repo, triggering a Netlify rebuild.
+              </div>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <!-- ═══ TOAST CONTAINER ═══════════════════════════════════════════════════ -->
+  <div id="toast-container"></div>
+
+  <script src="admin.js"></script>
+</body>
+</html>

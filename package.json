@@ -1,0 +1,9 @@
+{
+  "name": "aes-website",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Allied Event Service website",
+  "dependencies": {
+    "@netlify/blobs": "^6.5.0"
+  }
+}
