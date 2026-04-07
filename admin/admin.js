@@ -755,11 +755,19 @@
   // BOOTSTRAP
   // ═══════════════════════════════════════════════════════════════════════════
   async function loadAndRender() {
-    _content   = await loadContent();
-    _lastSaved = snap(_content);
-    buildSidebar();
-    initTopbar();
-    renderSlotBubbles();
+    console.log('[AES] loadAndRender: start');
+    try {
+      _content   = await loadContent();
+      console.log('[AES] loadAndRender: content loaded');
+      _lastSaved = snap(_content);
+      buildSidebar();
+      console.log('[AES] loadAndRender: sidebar built');
+      initTopbar();
+      renderSlotBubbles();
+      console.log('[AES] loadAndRender: complete');
+    } catch (err) {
+      console.error('[AES] loadAndRender ERROR:', err);
+    }
   }
 
   // Expose editor init for the inline login handler in index.html
