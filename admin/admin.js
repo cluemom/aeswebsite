@@ -227,21 +227,31 @@
   function findSection(id) { return flatSections().find(function (s) { return s.id === id; }); }
 
   // CMS token (for Netlify function auth)
-  function getCMSToken() { return localStorage.getItem(GH_KEY) || ''; }
-  function setCMSToken(t) { localStorage.setItem(GH_KEY, t); }
+  function getCMSToken() { return lsGet(GH_KEY) || ''; }
+  function setCMSToken(t) { lsSet(GH_KEY, t); }
 
   // ═══════════════════════════════════════════════════════════════════════════
   // AUTH
   // ═══════════════════════════════════════════════════════════════════════════
+  function lsGet(key) { try { return localStorage.getItem(key); } catch (e) { return null; } }
+  function lsSet(key, val) { try { localStorage.setItem(key, val); } catch (e) {} }
+  function lsRemove(key) { try { localStorage.removeItem(key); } catch (e) {} }
+
   function initAuth() {
-    if (localStorage.getItem(DEV_AUTH_KEY) === 'true') { showEditor(); return; }
+    if (lsGet(DEV_AUTH_KEY) === 'true') { showEditor(); return; }
 
     var loginBtn = document.getElementById('login-btn');
     var pw       = document.getElementById('login-password');
 
+    if (!loginBtn || !pw) {
+      console.error('[AES] Login elements missing from DOM');
+      return;
+    }
+
     function attempt() {
-      if (pw.value === DEV_PASSWORD) {
-        localStorage.setItem(DEV_AUTH_KEY, 'true');
+      var entered = pw.value.trim();
+      if (entered === DEV_PASSWORD) {
+        lsSet(DEV_AUTH_KEY, 'true');
         showEditor();
       } else {
         showToast('Incorrect password', 'error');
@@ -255,10 +265,13 @@
     loginBtn.addEventListener('click', attempt);
     pw.addEventListener('keydown', function (e) { if (e.key === 'Enter') attempt(); });
 
-    document.getElementById('logout-btn').addEventListener('click', function () {
-      localStorage.removeItem(DEV_AUTH_KEY);
-      window.location.href = '../index.html';
-    });
+    var logoutBtn = document.getElementById('logout-btn');
+    if (logoutBtn) {
+      logoutBtn.addEventListener('click', function () {
+        lsRemove(DEV_AUTH_KEY);
+        window.location.href = '../index.html';
+      });
+    }
   }
 
   function showLogin() {
@@ -277,7 +290,7 @@
   async function loadContent() {
     // 1. localStorage — persists admin edits across sessions
     try {
-      var stored = localStorage.getItem(STORAGE_KEY);
+      var stored = lsGet(STORAGE_KEY);
       if (stored) { var p = JSON.parse(stored); if (p) return p; }
     } catch (e) {}
 
@@ -319,7 +332,7 @@
   // ═══════════════════════════════════════════════════════════════════════════
   function loadSlots() {
     try {
-      var stored = localStorage.getItem(SLOTS_KEY);
+      var stored = lsGet(SLOTS_KEY);
       if (stored) {
         var arr = JSON.parse(stored);
         if (Array.isArray(arr)) {
@@ -333,7 +346,7 @@
   }
 
   function persistSlots(slots) {
-    localStorage.setItem(SLOTS_KEY, JSON.stringify(slots));
+    lsSet(SLOTS_KEY, JSON.stringify(slots));
   }
 
   async function saveToSlot(index) {
@@ -347,7 +360,7 @@
     };
     persistSlots(slots);
 
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(_content));
+    lsSet(STORAGE_KEY, JSON.stringify(_content));
     showToast('Slot ' + (index + 1) + ' saved ✓', 'success');
 
     _lastSaved = snap(_content);
@@ -365,7 +378,7 @@
 
     _content   = clone(slot.content);
     _lastSaved = snap(_content);
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(_content));
+    lsSet(STORAGE_KEY, JSON.stringify(_content));
     setUnsaved(false);
 
     if (_currentSection) activateSection(_currentSection);
@@ -688,7 +701,7 @@
     btn.textContent = 'Publishing…';
 
     // Sync to localStorage for instant local preview
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(_content));
+    lsSet(STORAGE_KEY, JSON.stringify(_content));
 
     try {
       var apiBase = 'https://api.github.com/repos/' + GH_OWNER + '/' + GH_REPO + '/contents/' + GH_FILE;
