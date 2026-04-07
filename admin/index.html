@@ -188,9 +188,10 @@
         document.getElementById('login-screen').style.display = 'none';
         document.getElementById('editor-app').style.display   = 'flex';
         if (typeof window.aesStartEditor === 'function') {
+          console.log('[AES] calling aesStartEditor');
           window.aesStartEditor();
         } else {
-          console.warn('[AES] aesStartEditor not ready yet, editor content may not load');
+          console.error('[AES] aesStartEditor missing — admin.js may have failed to load');
         }
       } else {
         console.log('[AES] incorrect password');

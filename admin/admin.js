@@ -5,6 +5,7 @@
  */
 (function () {
   'use strict';
+  try {
 
   const STORAGE_KEY   = 'aes_content';
   const SLOTS_KEY     = 'aes_slots';
@@ -238,15 +239,26 @@
   function lsRemove(key) { try { localStorage.removeItem(key); } catch (e) {} }
 
   function initAuth() {
-    // Login UI is handled by inline script in index.html.
-    // This just wires the logout button and starts the editor if already authed.
     console.log('[AES] admin.js loaded, initAuth running');
+
+    // If the inline login script already showed the editor (auto-login or just logged in),
+    // kick off the content load now.
+    var editorApp = document.getElementById('editor-app');
+    if (editorApp && editorApp.style.display === 'flex') {
+      console.log('[AES] editor already visible on load, calling loadAndRender');
+      loadAndRender();
+    }
 
     var logoutBtn = document.getElementById('logout-btn');
     if (logoutBtn) {
       logoutBtn.addEventListener('click', function () {
+        // Clear auth and swap screens — no reload needed, avoids auto-login loop
         lsRemove(DEV_AUTH_KEY);
-        window.location.reload();
+        var loginScreen = document.getElementById('login-screen');
+        if (loginScreen) loginScreen.style.display = 'flex';
+        if (editorApp)   editorApp.style.display   = 'none';
+        var pw = document.getElementById('login-password');
+        if (pw) { pw.value = ''; pw.focus(); }
       });
     }
   }
@@ -775,5 +787,9 @@
 
   // Script is at bottom of body — DOM is ready, call directly
   initAuth();
+
+  } catch (fatalErr) {
+    console.error('[AES] FATAL — admin.js crashed before finishing setup:', fatalErr);
+  }
 
 })();
