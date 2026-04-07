@@ -238,38 +238,15 @@
   function lsRemove(key) { try { localStorage.removeItem(key); } catch (e) {} }
 
   function initAuth() {
-    if (lsGet(DEV_AUTH_KEY) === 'true') { showEditor(); return; }
-
-    var loginBtn = document.getElementById('login-btn');
-    var pw       = document.getElementById('login-password');
-
-    if (!loginBtn || !pw) {
-      console.error('[AES] Login elements missing from DOM');
-      return;
-    }
-
-    function attempt() {
-      var entered = pw.value.trim();
-      if (entered === DEV_PASSWORD) {
-        lsSet(DEV_AUTH_KEY, 'true');
-        showEditor();
-      } else {
-        showToast('Incorrect password', 'error');
-        pw.classList.add('shake');
-        setTimeout(function () { pw.classList.remove('shake'); }, 500);
-        pw.value = '';
-        pw.focus();
-      }
-    }
-
-    loginBtn.addEventListener('click', attempt);
-    pw.addEventListener('keydown', function (e) { if (e.key === 'Enter') attempt(); });
+    // Login UI is handled by inline script in index.html.
+    // This just wires the logout button and starts the editor if already authed.
+    console.log('[AES] admin.js loaded, initAuth running');
 
     var logoutBtn = document.getElementById('logout-btn');
     if (logoutBtn) {
       logoutBtn.addEventListener('click', function () {
         lsRemove(DEV_AUTH_KEY);
-        window.location.href = '../index.html';
+        window.location.reload();
       });
     }
   }
@@ -784,6 +761,9 @@
     initTopbar();
     renderSlotBubbles();
   }
+
+  // Expose editor init for the inline login handler in index.html
+  window.aesStartEditor = loadAndRender;
 
   // Script is at bottom of body — DOM is ready, call directly
   initAuth();

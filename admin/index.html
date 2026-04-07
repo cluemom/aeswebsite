@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>AES Admin — Content Manager</title>
   <meta name="robots" content="noindex, nofollow" />
-  <link rel="stylesheet" href="admin.css?v=3" />
+  <link rel="stylesheet" href="admin.css?v=4" />
 </head>
 <body>
 
@@ -26,8 +26,9 @@
         class="dev-password-input"
         placeholder="Enter password"
         autocomplete="current-password"
+        onkeydown="if(event.key==='Enter')aesLogin()"
       />
-      <button id="login-btn" class="btn-login" type="button">
+      <button id="login-btn" class="btn-login" type="button" onclick="aesLogin()">
         Sign In
       </button>
 
@@ -118,6 +119,55 @@
   <!-- ═══ TOAST CONTAINER ═══════════════════════════════════════════════════ -->
   <div id="toast-container"></div>
 
-  <script src="admin.js?v=3"></script>
+  <script>
+    // Inline login — runs directly in HTML, no dependency on admin.js
+    var AES_AUTH_KEY = 'aes_dev_auth';
+    var AES_PASSWORD = 'aesadmin2025';
+
+    function aesLogin() {
+      console.log('[AES] Login button clicked');
+      var pw = document.getElementById('login-password');
+      if (!pw) { console.error('[AES] password input not found'); return; }
+      console.log('[AES] password entered, checking...');
+      if (pw.value === AES_PASSWORD) {
+        console.log('[AES] password correct, showing editor');
+        try { localStorage.setItem(AES_AUTH_KEY, 'true'); } catch(e) {}
+        document.getElementById('login-screen').style.display = 'none';
+        document.getElementById('editor-app').style.display   = 'flex';
+        if (typeof window.aesStartEditor === 'function') {
+          window.aesStartEditor();
+        } else {
+          console.warn('[AES] aesStartEditor not ready yet, editor content may not load');
+        }
+      } else {
+        console.log('[AES] incorrect password');
+        pw.value = '';
+        pw.focus();
+        pw.style.borderColor = '#e74c3c';
+        setTimeout(function() { pw.style.borderColor = ''; }, 800);
+      }
+    }
+
+    // Auto-show editor if already authenticated
+    (function() {
+      var authed = false;
+      try { authed = localStorage.getItem(AES_AUTH_KEY) === 'true'; } catch(e) {}
+      if (authed) {
+        document.getElementById('login-screen').style.display = 'none';
+        document.getElementById('editor-app').style.display   = 'flex';
+        // aesStartEditor will be set when admin.js loads below
+        window._aesPendingStart = true;
+      }
+    })();
+  </script>
+
+  <script src="admin.js?v=4"></script>
+
+  <script>
+    // If we auto-showed the editor before admin.js loaded, kick off the editor now
+    if (window._aesPendingStart && typeof window.aesStartEditor === 'function') {
+      window.aesStartEditor();
+    }
+  </script>
 </body>
 </html>
