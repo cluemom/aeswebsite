@@ -82,8 +82,9 @@
         class="dev-password-input"
         placeholder="Enter password"
         autocomplete="current-password"
+        onkeydown="if(event.key==='Enter')aesLogin()"
       />
-      <button id="login-btn" class="btn-login" type="button">
+      <button id="login-btn" class="btn-login" type="button" onclick="aesLogin()">
         Sign In
       </button>
 
@@ -174,6 +175,6 @@
   <!-- ═══ TOAST CONTAINER ═══════════════════════════════════════════════════ -->
   <div id="toast-container"></div>
 
-  <script src="admin.js?v=7"></script>
+  <script src="admin.js?v=8"></script>
 </body>
 </html>
