@@ -643,15 +643,13 @@ async function loadAndRender() {
   renderSlotBubbles();
 }
 
-document.addEventListener('DOMContentLoaded', function() {
-  // Wire login form
-  var loginBtn = document.getElementById('login-btn');
-  var loginPw  = document.getElementById('login-password');
-  if (loginBtn) loginBtn.onclick = aesLogin;
-  if (loginPw)  loginPw.onkeydown = function(e) { if (e.key === 'Enter') aesLogin(); };
+// Script is at bottom of <body> so DOM is already ready — call directly.
+var loginBtn = document.getElementById('login-btn');
+var loginPw  = document.getElementById('login-password');
+if (loginBtn) loginBtn.onclick = aesLogin;
+if (loginPw)  loginPw.onkeydown = function(e) { if (e.key === 'Enter') aesLogin(); };
 
-  // Auto-login if session is still active
-  if (lsGet(AES_AUTH_KEY) === 'true') {
-    showEditor();
-  }
-});
+// Auto-login if session is still active
+if (lsGet(AES_AUTH_KEY) === 'true') {
+  showEditor();
+}
