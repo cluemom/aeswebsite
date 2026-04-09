@@ -1,164 +1,506 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="robots" content="noindex, nofollow" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, nofollow">
   <title>AES Content Manager</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg: #0f1117; --sidebar: #1a1d2e; --cyan: #12d4e0; --cyan2: #0088b8;
+      --text: #e2e8f0; --muted: #94a3b8; --border: rgba(255,255,255,.08);
+      --content-bg: #f0f2f5;
+    }
+    html, body { height: 100%; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; font-size: 14px; background: var(--bg); color: var(--text); -webkit-font-smoothing: antialiased; }
+
+    /* ── LOGIN ── */
+    #login-screen { position: fixed; inset: 0; display: flex; align-items: center; justify-content: center; background: var(--bg); z-index: 9999; }
+    .login-card { background: var(--sidebar); border-radius: 16px; padding: 48px 40px 36px; width: 100%; max-width: 400px; text-align: center; box-shadow: 0 8px 32px rgba(0,0,0,.35); border: 1px solid var(--border); }
+    .login-logo { height: 52px; width: auto; margin: 0 auto 24px; display: block; }
+    .login-card h1 { font-size: 22px; font-weight: 600; color: #fff; margin-bottom: 8px; }
+    .login-card p  { font-size: 13px; color: var(--muted); margin-bottom: 28px; }
+    .login-input { width: 100%; padding: 11px 14px; background: rgba(255,255,255,.07); border: 1px solid rgba(255,255,255,.12); border-radius: 8px; color: #fff; font-size: 14px; margin-bottom: 10px; outline: none; transition: border-color .15s; }
+    .login-input:focus { border-color: var(--cyan); }
+    .login-input::placeholder { color: var(--muted); }
+    .login-btn { width: 100%; padding: 12px; background: linear-gradient(135deg, var(--cyan), var(--cyan2)); color: #fff; font-size: 14px; font-weight: 600; border: none; border-radius: 8px; cursor: pointer; transition: opacity .15s; }
+    .login-btn:hover { opacity: .9; }
+    .login-error { color: #ef4444; font-size: 13px; margin-top: 10px; min-height: 18px; }
+    .login-footer { margin-top: 28px; font-size: 12px; color: rgba(148,163,184,.35); }
+
+    /* ── EDITOR LAYOUT ── */
+    #editor { display: flex; height: 100vh; overflow: hidden; }
+
+    /* ── SIDEBAR ── */
+    #sidebar { width: 260px; background: var(--sidebar); display: flex; flex-direction: column; height: 100%; border-right: 1px solid var(--border); flex-shrink: 0; }
+    .sb-header { display: flex; align-items: center; gap: 10px; padding: 18px 20px; border-bottom: 1px solid var(--border); }
+    .sb-logo { height: 28px; width: auto; }
+    .sb-title { font-size: 13px; font-weight: 700; color: #fff; }
+    #nav { flex: 1; overflow-y: auto; padding: 8px 0; }
+    .nav-group { margin-bottom: 4px; }
+    .nav-group-label { padding: 10px 20px 4px; font-size: 10px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: rgba(148,163,184,.5); }
+    .nav-btn { display: block; width: 100%; text-align: left; padding: 8px 20px; background: none; border: none; color: var(--muted); font-size: 13px; cursor: pointer; transition: background .12s, color .12s; }
+    .nav-btn:hover { background: rgba(255,255,255,.05); color: #fff; }
+    .nav-btn.active { background: rgba(18,212,224,.1); color: var(--cyan); }
+    .sb-footer { padding: 16px 20px; border-top: 1px solid var(--border); }
+    .logout-btn { display: flex; align-items: center; gap: 8px; background: none; border: none; color: var(--muted); font-size: 13px; cursor: pointer; padding: 6px 0; width: 100%; }
+    .logout-btn:hover { color: #ef4444; }
+    .sb-version { font-size: 11px; color: rgba(148,163,184,.2); margin-top: 6px; }
+
+    /* ── MAIN ── */
+    #main { flex: 1; display: flex; flex-direction: column; overflow: hidden; }
+    #topbar { height: 60px; background: var(--sidebar); display: flex; align-items: center; justify-content: space-between; padding: 0 24px; border-bottom: 1px solid var(--border); flex-shrink: 0; }
+    #section-title { font-size: 16px; font-weight: 600; color: #fff; }
+    .pub-btn { display: flex; align-items: center; gap: 6px; background: linear-gradient(135deg, var(--cyan), var(--cyan2)); color: #fff; border: none; border-radius: 6px; padding: 8px 18px; font-size: 13px; font-weight: 700; cursor: pointer; transition: opacity .15s; }
+    .pub-btn:hover { opacity: .88; }
+    .pub-btn:disabled { opacity: .45; cursor: not-allowed; }
+
+    /* ── CONTENT ── */
+    #content-area { flex: 1; overflow-y: auto; background: var(--content-bg); }
+    #welcome { display: flex; align-items: center; justify-content: center; height: 100%; font-size: 15px; color: #94a3b8; text-align: center; padding: 40px; }
+    #fields { padding: 32px; max-width: 780px; display: none; }
+    .field-section-title { font-size: 20px; font-weight: 700; color: #1e293b; margin-bottom: 28px; padding-bottom: 16px; border-bottom: 2px solid #e2e8f0; }
+    .field-group { margin-bottom: 22px; }
+    .field-label { display: block; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .8px; color: #64748b; margin-bottom: 6px; }
+    .field-hint { font-size: 12px; color: #94a3b8; margin-bottom: 6px; }
+    .field-input { width: 100%; padding: 10px 12px; border: 1.5px solid #e2e8f0; border-radius: 6px; font-size: 14px; color: #1e293b; background: #fff; outline: none; font-family: inherit; transition: border-color .15s; }
+    .field-input:focus { border-color: var(--cyan); }
+    textarea.field-input { resize: vertical; min-height: 80px; }
+
+    /* ── LIST WIDGET ── */
+    .list-row { display: flex; gap: 8px; margin-bottom: 6px; }
+    .list-row .field-input { flex: 1; }
+    .list-remove { padding: 0 10px; background: none; border: 1.5px solid #fca5a5; color: #ef4444; border-radius: 6px; cursor: pointer; font-size: 16px; line-height: 1; flex-shrink: 0; }
+    .list-remove:hover { background: #fef2f2; }
+    .list-add { display: inline-flex; align-items: center; gap: 4px; padding: 7px 14px; background: none; border: 1.5px dashed #cbd5e1; border-radius: 6px; color: #64748b; font-size: 13px; cursor: pointer; margin-top: 4px; }
+    .list-add:hover { border-color: var(--cyan); color: var(--cyan); }
+
+    /* ── TOAST ── */
+    #toast-wrap { position: fixed; bottom: 24px; right: 24px; z-index: 9999; display: flex; flex-direction: column; gap: 8px; pointer-events: none; }
+    .toast { padding: 12px 18px; border-radius: 8px; font-size: 14px; font-weight: 500; box-shadow: 0 4px 16px rgba(0,0,0,.15); opacity: 0; transform: translateY(8px); transition: all .2s; }
+    .toast.show { opacity: 1; transform: none; }
+    .toast-success { background: #22c55e; color: #fff; }
+    .toast-error   { background: #ef4444; color: #fff; }
+    .toast-info    { background: #3b82f6; color: #fff; }
+  </style>
 </head>
 <body>
-  <script src="https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.js"></script>
-  <script>
-    CMS.init({ config: {
-      backend: {
-        name: 'github',
-        repo: 'cluemom/aeswebsite',
-        branch: 'main',
-        base_url: 'https://aes-oauth.onrender.com',
-      },
-      media_folder: 'images',
-      public_folder: '/images',
-      collections: [{
-        name: 'pages',
-        label: 'Site Content',
-        files: [{
-          name: 'content',
-          label: 'All Pages',
-          file: 'content.json',
-          fields: [
 
-            // GLOBAL
-            { label: 'Global', name: 'global', widget: 'object', fields: [
-              { label: 'Phone',          name: 'phone',   widget: 'string' },
-              { label: 'Email',          name: 'email',   widget: 'string' },
-              { label: 'Website',        name: 'website', widget: 'string' },
-              { label: 'Footer Tagline', name: 'tagline', widget: 'text'   },
-            ]},
+<!-- LOGIN -->
+<div id="login-screen">
+  <div class="login-card">
+    <img src="../images/aes-logo.png" alt="AES" class="login-logo" onerror="this.style.display='none'">
+    <h1>Content Manager</h1>
+    <p>Sign in to manage your site content</p>
+    <input id="pw" type="password" class="login-input" placeholder="Password"
+           autocomplete="current-password" onkeydown="if(event.key==='Enter')doLogin()">
+    <button class="login-btn" onclick="doLogin()">Sign In</button>
+    <div id="login-error" class="login-error"></div>
+    <p class="login-footer">Allied Event Service &copy; 2025</p>
+  </div>
+</div>
 
-            // HOME
-            { label: 'Home Page', name: 'home', widget: 'object', fields: [
-              { label: 'Hero', name: 'hero', widget: 'object', fields: [
-                { label: 'Subtitle',         name: 'subtitle', widget: 'text' },
-                { label: 'Background Image', name: 'image',    widget: 'image', required: false },
-              ]},
-              { label: 'Services Section', name: 'services', widget: 'object', fields: [
-                { label: 'Lead Text', name: 'lead', widget: 'text' },
-              ]},
-              { label: 'Stats Strip', name: 'stats', widget: 'object', fields: [
-                { label: 'Stat 1', name: 'label0', widget: 'string' },
-                { label: 'Stat 2', name: 'label1', widget: 'string' },
-                { label: 'Stat 3', name: 'label2', widget: 'string' },
-                { label: 'Stat 4', name: 'label3', widget: 'string' },
-              ]},
-              { label: 'Your Ally Section', name: 'partner', widget: 'object', fields: [
-                { label: 'Heading', name: 'title', widget: 'string' },
-                { label: 'Body',    name: 'body',  widget: 'text'   },
-                { label: 'Image',   name: 'image', widget: 'image', required: false },
-              ]},
-              { label: 'How We Work', name: 'process', widget: 'object', fields: [
-                { label: 'Step 1', name: 'step0', widget: 'object', fields: [
-                  { label: 'Title', name: 'title', widget: 'string' },
-                  { label: 'Body',  name: 'body',  widget: 'text'   },
-                ]},
-                { label: 'Step 2', name: 'step1', widget: 'object', fields: [
-                  { label: 'Title', name: 'title', widget: 'string' },
-                  { label: 'Body',  name: 'body',  widget: 'text'   },
-                ]},
-                { label: 'Step 3', name: 'step2', widget: 'object', fields: [
-                  { label: 'Title', name: 'title', widget: 'string' },
-                  { label: 'Body',  name: 'body',  widget: 'text'   },
-                ]},
-                { label: 'Step 4', name: 'step3', widget: 'object', fields: [
-                  { label: 'Title', name: 'title', widget: 'string' },
-                  { label: 'Body',  name: 'body',  widget: 'text'   },
-                ]},
-              ]},
-              { label: 'Technology Section', name: 'technology', widget: 'object', fields: [
-                { label: 'Heading', name: 'title', widget: 'string' },
-                { label: 'Body',    name: 'body',  widget: 'text'   },
-              ]},
-              { label: 'CTA Section', name: 'reach', widget: 'object', fields: [
-                { label: 'Body Text', name: 'body', widget: 'text' },
-              ]},
-            ]},
+<!-- EDITOR -->
+<div id="editor" style="display:none">
+  <aside id="sidebar">
+    <div class="sb-header">
+      <img src="../images/aes-logo.png" alt="AES" class="sb-logo" onerror="this.style.display='none'">
+      <span class="sb-title">Admin</span>
+    </div>
+    <nav id="nav"></nav>
+    <div class="sb-footer">
+      <button class="logout-btn" onclick="doLogout()">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+        Logout
+      </button>
+      <p class="sb-version">AES CMS v2.0</p>
+    </div>
+  </aside>
 
-            // COMPANY
-            { label: 'Company Page', name: 'company', widget: 'object', fields: [
-              { label: 'Hero', name: 'hero', widget: 'object', fields: [
-                { label: 'Lead Text', name: 'lead',  widget: 'text' },
-                { label: 'Image',     name: 'image', widget: 'image', required: false },
-              ]},
-              { label: 'Pull Quote', name: 'pullquote', widget: 'text' },
-              { label: 'Our Philosophy', name: 'philosophy', widget: 'object', fields: [
-                { label: 'Heading',   name: 'title',     widget: 'string' },
-                { label: 'Body',      name: 'body',      widget: 'text'   },
-                { label: 'Checklist', name: 'checklist', widget: 'list', field: { label: 'Item', name: 'item', widget: 'string' } },
-              ]},
-              { label: 'Our Team', name: 'team', widget: 'object', fields: [
-                { label: 'Heading',   name: 'title',    widget: 'string' },
-                { label: 'Lead Text', name: 'body',     widget: 'text'   },
-                { label: 'Side Body', name: 'sidebody', widget: 'text'   },
-                { label: 'Team Cards', name: 'cards', widget: 'list', fields: [
-                  { label: 'Name',        name: 'name', widget: 'string' },
-                  { label: 'Role',        name: 'role', widget: 'string' },
-                  { label: 'Description', name: 'desc', widget: 'text'   },
-                ]},
-              ]},
-              { label: 'For Our Clients', name: 'clients', widget: 'object', fields: [
-                { label: 'Heading',   name: 'title',     widget: 'string' },
-                { label: 'Body',      name: 'body',      widget: 'text'   },
-                { label: 'Image',     name: 'image',     widget: 'image', required: false },
-                { label: 'Checklist', name: 'checklist', widget: 'list', field: { label: 'Item', name: 'item', widget: 'string' } },
-              ]},
-              { label: 'For Our Partners', name: 'partners', widget: 'object', fields: [
-                { label: 'Heading',   name: 'title',     widget: 'string' },
-                { label: 'Body',      name: 'body',      widget: 'text'   },
-                { label: 'Image',     name: 'image',     widget: 'image', required: false },
-                { label: 'Checklist', name: 'checklist', widget: 'list', field: { label: 'Item', name: 'item', widget: 'string' } },
-              ]},
-              { label: 'CTA Section', name: 'cta', widget: 'object', fields: [
-                { label: 'Body', name: 'body', widget: 'text' },
-              ]},
-            ]},
+  <div id="main">
+    <div id="topbar">
+      <span id="section-title">Select a section</span>
+      <button class="pub-btn" id="pub-btn" onclick="doPublish()">&#8593; Publish to Site</button>
+    </div>
+    <div id="content-area">
+      <div id="welcome">&#8592; Select a section from the sidebar to start editing</div>
+      <div id="fields"></div>
+    </div>
+  </div>
+</div>
 
-            // CLIENT SOLUTIONS
-            { label: 'Client Solutions', name: 'solutions', widget: 'object', fields: [
-              { label: 'Page Intro', name: 'intro', widget: 'object', fields: [
-                { label: 'Lead Text', name: 'body', widget: 'text' },
-              ]},
-              { label: 'Service Cards', name: 'cards', widget: 'list', fields: [
-                { label: 'Title', name: 'title', widget: 'string' },
-                { label: 'Body',  name: 'body',  widget: 'text'   },
-                { label: 'Image', name: 'image', widget: 'image', required: false },
-                { label: 'Feature List', name: 'items', widget: 'list', field: { label: 'Item', name: 'item', widget: 'string' } },
-              ]},
-              { label: 'Technology Banner', name: 'tech', widget: 'object', fields: [
-                { label: 'Heading', name: 'title', widget: 'string' },
-                { label: 'Body',    name: 'body',  widget: 'text'   },
-              ]},
-              { label: 'CTA Section', name: 'cta', widget: 'object', fields: [
-                { label: 'Body', name: 'body', widget: 'text' },
-              ]},
-            ]},
+<div id="toast-wrap"></div>
 
-            // CONTACT
-            { label: 'Contact', name: 'contact', widget: 'object', fields: [
-              { label: 'Intro Text', name: 'intro', widget: 'text' },
-              { label: 'Emails', name: 'emails', widget: 'object', fields: [
-                { label: 'Sales Email',   name: 'sales',   widget: 'string' },
-                { label: 'General Email', name: 'info',    widget: 'string' },
-                { label: 'Support Email', name: 'support', widget: 'string' },
-              ]},
-              { label: 'Photo',       name: 'image', widget: 'image', required: false },
-              { label: 'CTA Section', name: 'cta',   widget: 'object', fields: [
-                { label: 'Body', name: 'body', widget: 'text' },
-              ]},
-            ]},
+<script>
+// ─── CONFIG ──────────────────────────────────────────────────────────────────
+var PASS     = 'aesadmin2025';
+var GH_OWNER = 'cluemom';
+var GH_REPO  = 'aeswebsite';
+var GH_FILE  = 'content.json';
 
-          ]
-        }]
-      }]
-    }});
-  </script>
+// ─── SCHEMA ──────────────────────────────────────────────────────────────────
+var SCHEMA = [
+  { group: 'Home Page', sections: [
+    { id: 'home_hero', label: 'Hero', fields: [
+      { key: 'home.hero.subtitle', label: 'Subtitle',         type: 'textarea' },
+      { key: 'home.hero.image',    label: 'Background Image (URL)', type: 'text' },
+    ]},
+    { id: 'home_services', label: 'Services Section', fields: [
+      { key: 'home.services.lead', label: 'Lead Text', type: 'textarea' },
+    ]},
+    { id: 'home_stats', label: 'Stats Strip', fields: [
+      { key: 'home.stats.label0', label: 'Stat 1', type: 'text' },
+      { key: 'home.stats.label1', label: 'Stat 2', type: 'text' },
+      { key: 'home.stats.label2', label: 'Stat 3', type: 'text' },
+      { key: 'home.stats.label3', label: 'Stat 4', type: 'text' },
+    ]},
+    { id: 'home_partner', label: 'Your Ally Section', fields: [
+      { key: 'home.partner.title', label: 'Heading',   type: 'text'     },
+      { key: 'home.partner.body',  label: 'Body Text', type: 'textarea' },
+      { key: 'home.partner.image', label: 'Image URL', type: 'text'     },
+    ]},
+    { id: 'home_process', label: 'How We Work', fields: [
+      { key: 'home.process.step0.title', label: 'Step 1 Title', type: 'text'     },
+      { key: 'home.process.step0.body',  label: 'Step 1 Body',  type: 'textarea' },
+      { key: 'home.process.step1.title', label: 'Step 2 Title', type: 'text'     },
+      { key: 'home.process.step1.body',  label: 'Step 2 Body',  type: 'textarea' },
+      { key: 'home.process.step2.title', label: 'Step 3 Title', type: 'text'     },
+      { key: 'home.process.step2.body',  label: 'Step 3 Body',  type: 'textarea' },
+      { key: 'home.process.step3.title', label: 'Step 4 Title', type: 'text'     },
+      { key: 'home.process.step3.body',  label: 'Step 4 Body',  type: 'textarea' },
+    ]},
+    { id: 'home_tech', label: 'Technology Section', fields: [
+      { key: 'home.technology.title', label: 'Heading',   type: 'text'     },
+      { key: 'home.technology.body',  label: 'Body Text', type: 'textarea' },
+    ]},
+    { id: 'home_cta', label: 'CTA Section', fields: [
+      { key: 'home.reach.body', label: 'Body Text', type: 'textarea' },
+    ]},
+  ]},
+  { group: 'Company Page', sections: [
+    { id: 'co_hero', label: 'Page Hero', fields: [
+      { key: 'company.hero.lead',  label: 'Lead Text', type: 'textarea' },
+      { key: 'company.hero.image', label: 'Image URL', type: 'text'     },
+    ]},
+    { id: 'co_quote', label: 'Pull Quote', fields: [
+      { key: 'company.pullquote', label: 'Quote Text', type: 'textarea' },
+    ]},
+    { id: 'co_phil', label: 'Our Philosophy', fields: [
+      { key: 'company.philosophy.title',     label: 'Heading',   type: 'text'     },
+      { key: 'company.philosophy.body',      label: 'Body Text', type: 'textarea' },
+      { key: 'company.philosophy.checklist', label: 'Checklist', type: 'list'     },
+    ]},
+    { id: 'co_team', label: 'Our Team', fields: [
+      { key: 'company.team.title',    label: 'Heading',   type: 'text'     },
+      { key: 'company.team.body',     label: 'Lead Text', type: 'textarea' },
+      { key: 'company.team.sidebody', label: 'Side Body', type: 'textarea' },
+    ]},
+    { id: 'co_clients', label: 'For Our Clients', fields: [
+      { key: 'company.clients.title',     label: 'Heading',   type: 'text'     },
+      { key: 'company.clients.body',      label: 'Body Text', type: 'textarea' },
+      { key: 'company.clients.image',     label: 'Image URL', type: 'text'     },
+      { key: 'company.clients.checklist', label: 'Checklist', type: 'list'     },
+    ]},
+    { id: 'co_partners', label: 'For Our Partners', fields: [
+      { key: 'company.partners.title',     label: 'Heading',   type: 'text'     },
+      { key: 'company.partners.body',      label: 'Body Text', type: 'textarea' },
+      { key: 'company.partners.image',     label: 'Image URL', type: 'text'     },
+      { key: 'company.partners.checklist', label: 'Checklist', type: 'list'     },
+    ]},
+    { id: 'co_cta', label: 'CTA Section', fields: [
+      { key: 'company.cta.body', label: 'Body Text', type: 'textarea' },
+    ]},
+  ]},
+  { group: 'Client Solutions', sections: [
+    { id: 'sol_intro', label: 'Page Intro', fields: [
+      { key: 'solutions.intro.body', label: 'Lead Text', type: 'textarea' },
+    ]},
+    { id: 'sol_c1', label: 'Card 1: Project Mgmt', fields: [
+      { key: 'solutions.cards.0.title', label: 'Title',        type: 'text'     },
+      { key: 'solutions.cards.0.body',  label: 'Body Text',    type: 'textarea' },
+      { key: 'solutions.cards.0.image', label: 'Image URL',    type: 'text'     },
+      { key: 'solutions.cards.0.items', label: 'Feature List', type: 'list'     },
+    ]},
+    { id: 'sol_c2', label: 'Card 2: Audio Visual', fields: [
+      { key: 'solutions.cards.1.title', label: 'Title',        type: 'text'     },
+      { key: 'solutions.cards.1.body',  label: 'Body Text',    type: 'textarea' },
+      { key: 'solutions.cards.1.image', label: 'Image URL',    type: 'text'     },
+      { key: 'solutions.cards.1.items', label: 'Feature List', type: 'list'     },
+    ]},
+    { id: 'sol_c3', label: 'Card 3: Digital Services', fields: [
+      { key: 'solutions.cards.2.title', label: 'Title',        type: 'text'     },
+      { key: 'solutions.cards.2.body',  label: 'Body Text',    type: 'textarea' },
+      { key: 'solutions.cards.2.image', label: 'Image URL',    type: 'text'     },
+      { key: 'solutions.cards.2.items', label: 'Feature List', type: 'list'     },
+    ]},
+    { id: 'sol_tech', label: 'Technology Banner', fields: [
+      { key: 'solutions.tech.title', label: 'Heading',   type: 'text'     },
+      { key: 'solutions.tech.body',  label: 'Body Text', type: 'textarea' },
+    ]},
+    { id: 'sol_cta', label: 'CTA Section', fields: [
+      { key: 'solutions.cta.body', label: 'Body Text', type: 'textarea' },
+    ]},
+  ]},
+  { group: 'Contact', sections: [
+    { id: 'contact_main', label: 'Contact Info', fields: [
+      { key: 'contact.intro',          label: 'Intro Text',    type: 'textarea' },
+      { key: 'contact.emails.sales',   label: 'Sales Email',   type: 'text'     },
+      { key: 'contact.emails.info',    label: 'General Email', type: 'text'     },
+      { key: 'contact.emails.support', label: 'Support Email', type: 'text'     },
+      { key: 'contact.image',          label: 'Photo URL',     type: 'text'     },
+    ]},
+    { id: 'contact_cta', label: 'CTA Section', fields: [
+      { key: 'contact.cta.body', label: 'Body Text', type: 'textarea' },
+    ]},
+  ]},
+  { group: 'Global / Settings', sections: [
+    { id: 'global', label: 'Global Settings', fields: [
+      { key: 'global.phone',   label: 'Phone Number',   type: 'text'     },
+      { key: 'global.email',   label: 'Email Address',  type: 'text'     },
+      { key: 'global.website', label: 'Website URL',    type: 'text'     },
+      { key: 'global.tagline', label: 'Footer Tagline', type: 'textarea' },
+    ]},
+    { id: 'api', label: '&#9881; API Settings', fields: [
+      { key: '__token', label: 'GitHub Token', type: 'token',
+        hint: 'Fine-grained PAT with Contents read+write on cluemom/aeswebsite. Enter once to enable publishing.' },
+    ]},
+  ]},
+];
+
+// ─── STATE ───────────────────────────────────────────────────────────────────
+var _data    = {};
+var _section = null;
+
+// ─── STORAGE ─────────────────────────────────────────────────────────────────
+function lsGet(k)    { try { return localStorage.getItem(k);  } catch(e) { return null; } }
+function lsSet(k, v) { try { localStorage.setItem(k, v);      } catch(e) {} }
+function lsRm(k)     { try { localStorage.removeItem(k);      } catch(e) {} }
+
+// ─── DEEP GET / SET ───────────────────────────────────────────────────────────
+function dGet(obj, path) {
+  return path.split('.').reduce(function(o, k) { return (o != null) ? o[k] : undefined; }, obj);
+}
+function dSet(obj, path, val) {
+  var keys = path.split('.');
+  var last = keys.pop();
+  var node = keys.reduce(function(o, k, i) {
+    var nextKey = keys[i + 1] !== undefined ? keys[i + 1] : last;
+    if (o[k] == null || typeof o[k] !== 'object') o[k] = isNaN(Number(nextKey)) ? {} : [];
+    return o[k];
+  }, obj);
+  node[last] = val;
+}
+
+// ─── AUTH ─────────────────────────────────────────────────────────────────────
+function doLogin() {
+  var pw  = document.getElementById('pw');
+  var err = document.getElementById('login-error');
+  if (pw.value === PASS) {
+    lsSet('aes_auth', '1');
+    document.getElementById('login-screen').style.display = 'none';
+    document.getElementById('editor').style.display       = 'flex';
+    startEditor();
+  } else {
+    err.textContent = 'Incorrect password — try again';
+    pw.value = '';
+    pw.focus();
+    setTimeout(function() { err.textContent = ''; }, 3000);
+  }
+}
+
+function doLogout() {
+  lsRm('aes_auth');
+  document.getElementById('editor').style.display       = 'none';
+  document.getElementById('login-screen').style.display = 'flex';
+  document.getElementById('pw').value = '';
+}
+
+// ─── EDITOR START ─────────────────────────────────────────────────────────────
+function startEditor() {
+  var stored = lsGet('aes_content');
+  if (stored) {
+    try { _data = JSON.parse(stored); } catch(e) { _data = {}; }
+    buildNav();
+    return;
+  }
+  fetch('../content.json')
+    .then(function(r) { return r.ok ? r.json() : {}; })
+    .catch(function()  { return {}; })
+    .then(function(data) { _data = data; buildNav(); });
+}
+
+// ─── SIDEBAR ─────────────────────────────────────────────────────────────────
+function buildNav() {
+  var nav = document.getElementById('nav');
+  nav.innerHTML = '';
+  SCHEMA.forEach(function(group) {
+    var g = document.createElement('div');
+    g.className = 'nav-group';
+    var lbl = document.createElement('div');
+    lbl.className = 'nav-group-label';
+    lbl.textContent = group.group;
+    g.appendChild(lbl);
+    group.sections.forEach(function(sec) {
+      var b = document.createElement('button');
+      b.className = 'nav-btn';
+      b.innerHTML = sec.label;
+      b.dataset.id = sec.id;
+      b.addEventListener('click', function() { openSection(sec); });
+      g.appendChild(b);
+    });
+    nav.appendChild(g);
+  });
+}
+
+// ─── SECTION ─────────────────────────────────────────────────────────────────
+function openSection(sec) {
+  _section = sec;
+  document.querySelectorAll('.nav-btn').forEach(function(b) {
+    b.classList.toggle('active', b.dataset.id === sec.id);
+  });
+  document.getElementById('section-title').innerHTML = sec.label;
+  document.getElementById('welcome').style.display = 'none';
+  var f = document.getElementById('fields');
+  f.style.display = 'block';
+  renderFields(sec);
+}
+
+function renderFields(sec) {
+  var container = document.getElementById('fields');
+  container.innerHTML = '<div class="field-section-title">' + sec.label + '</div>';
+  sec.fields.forEach(function(f) {
+    var group = document.createElement('div');
+    group.className = 'field-group';
+    var lbl = document.createElement('label');
+    lbl.className = 'field-label';
+    lbl.textContent = f.label;
+    group.appendChild(lbl);
+    if (f.hint) {
+      var hint = document.createElement('p');
+      hint.className = 'field-hint';
+      hint.textContent = f.hint;
+      group.appendChild(hint);
+    }
+    if (f.type === 'list') {
+      group.appendChild(makeList(f.key));
+    } else if (f.type === 'token') {
+      var inp = document.createElement('input');
+      inp.type = 'password';
+      inp.className = 'field-input';
+      inp.value = lsGet('aes_token') || '';
+      inp.autocomplete = 'new-password';
+      inp.addEventListener('input', function() { lsSet('aes_token', inp.value); });
+      group.appendChild(inp);
+    } else if (f.type === 'textarea') {
+      var ta = document.createElement('textarea');
+      ta.className = 'field-input';
+      ta.rows = 4;
+      ta.value = dGet(_data, f.key) || '';
+      ta.addEventListener('input', function() { dSet(_data, f.key, ta.value); });
+      group.appendChild(ta);
+    } else {
+      var inp2 = document.createElement('input');
+      inp2.type = 'text';
+      inp2.className = 'field-input';
+      inp2.value = dGet(_data, f.key) || '';
+      inp2.addEventListener('input', function() { dSet(_data, f.key, inp2.value); });
+      group.appendChild(inp2);
+    }
+    container.appendChild(group);
+  });
+}
+
+function makeList(key) {
+  var arr = dGet(_data, key);
+  if (!Array.isArray(arr)) { arr = []; dSet(_data, key, arr); }
+  var wrap = document.createElement('div');
+  function redraw() {
+    wrap.innerHTML = '';
+    arr.forEach(function(item, i) {
+      var row = document.createElement('div');
+      row.className = 'list-row';
+      var inp = document.createElement('input');
+      inp.type = 'text';
+      inp.className = 'field-input';
+      inp.value = item;
+      inp.addEventListener('input', function() { arr[i] = inp.value; });
+      var rm = document.createElement('button');
+      rm.type = 'button';
+      rm.className = 'list-remove';
+      rm.textContent = '\u00d7';
+      rm.addEventListener('click', function() { arr.splice(i, 1); redraw(); });
+      row.appendChild(inp); row.appendChild(rm);
+      wrap.appendChild(row);
+    });
+    var add = document.createElement('button');
+    add.type = 'button';
+    add.className = 'list-add';
+    add.textContent = '+ Add item';
+    add.addEventListener('click', function() {
+      arr.push('');
+      redraw();
+      var inputs = wrap.querySelectorAll('input');
+      if (inputs.length) inputs[inputs.length - 1].focus();
+    });
+    wrap.appendChild(add);
+  }
+  redraw();
+  return wrap;
+}
+
+// ─── PUBLISH ─────────────────────────────────────────────────────────────────
+function doPublish() {
+  var token = lsGet('aes_token');
+  if (!token) {
+    showToast('Add your GitHub token in Global \u2192 API Settings first', 'error');
+    return;
+  }
+  var btn = document.getElementById('pub-btn');
+  btn.disabled = true;
+  btn.textContent = 'Publishing\u2026';
+  lsSet('aes_content', JSON.stringify(_data));
+  var base = 'https://api.github.com/repos/' + GH_OWNER + '/' + GH_REPO + '/contents/' + GH_FILE;
+  var headers = { 'Accept': 'application/vnd.github+json', 'Authorization': 'Bearer ' + token, 'X-GitHub-Api-Version': '2022-11-28' };
+  fetch(base, { headers: headers })
+    .then(function(r) {
+      if (r.status === 401) throw new Error('GitHub token invalid \u2014 check API Settings');
+      if (!r.ok) throw new Error('Could not read content.json (' + r.status + ')');
+      return r.json();
+    })
+    .then(function(file) {
+      var encoded = btoa(unescape(encodeURIComponent(JSON.stringify(_data, null, 2))));
+      return fetch(base, {
+        method: 'PUT',
+        headers: Object.assign({ 'Content-Type': 'application/json' }, headers),
+        body: JSON.stringify({ message: 'Update content.json via CMS', content: encoded, sha: file.sha }),
+      });
+    })
+    .then(function(r) {
+      if (!r.ok) return r.json().then(function(e) { throw new Error(e.message || r.status); });
+      showToast('Published! Site will update in ~1 minute.', 'success');
+    })
+    .catch(function(err) { showToast(err.message, 'error'); })
+    .finally(function() { btn.disabled = false; btn.innerHTML = '&#8593; Publish to Site'; });
+}
+
+// ─── TOAST ───────────────────────────────────────────────────────────────────
+function showToast(msg, type) {
+  var wrap = document.getElementById('toast-wrap');
+  var t = document.createElement('div');
+  t.className = 'toast toast-' + (type || 'info');
+  t.textContent = msg;
+  wrap.appendChild(t);
+  requestAnimationFrame(function() { requestAnimationFrame(function() { t.classList.add('show'); }); });
+  setTimeout(function() { t.classList.remove('show'); setTimeout(function() { t.remove(); }, 300); }, 4000);
+}
+
+// ─── BOOT ─────────────────────────────────────────────────────────────────────
+// Script is at the bottom of <body> — DOM is ready, run directly.
+if (lsGet('aes_auth') === '1') {
+  document.getElementById('login-screen').style.display = 'none';
+  document.getElementById('editor').style.display       = 'flex';
+  startEditor();
+}
+</script>
 </body>
 </html>
