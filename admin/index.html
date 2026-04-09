@@ -175,6 +175,36 @@
   <!-- ═══ TOAST CONTAINER ═══════════════════════════════════════════════════ -->
   <div id="toast-container"></div>
 
-  <script src="admin.js?v=8"></script>
+  <script>
+    // Login logic lives here — no dependency on admin.js loading
+    function aesLogin() {
+      var pw = document.getElementById('login-password');
+      if (pw.value === 'aesadmin2025') {
+        try { localStorage.setItem('aes_dev_auth', 'true'); } catch(e) {}
+        document.getElementById('login-screen').style.display = 'none';
+        document.getElementById('editor-app').style.display = 'flex';
+        if (typeof aesStartEditor === 'function') aesStartEditor();
+      } else {
+        pw.value = '';
+        pw.focus();
+        pw.style.borderColor = '#e74c3c';
+        setTimeout(function(){ pw.style.borderColor = ''; }, 800);
+      }
+    }
+    // Auto-login if already authenticated
+    try {
+      if (localStorage.getItem('aes_dev_auth') === 'true') {
+        document.getElementById('login-screen').style.display = 'none';
+        document.getElementById('editor-app').style.display = 'flex';
+      }
+    } catch(e) {}
+  </script>
+  <script src="admin.js?v=9"></script>
+  <script>
+    // If editor was auto-shown before admin.js loaded, kick it off now
+    if (document.getElementById('editor-app').style.display === 'flex' && typeof aesStartEditor === 'function') {
+      aesStartEditor();
+    }
+  </script>
 </body>
 </html>
