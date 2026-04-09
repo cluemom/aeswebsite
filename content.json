@@ -18,15 +18,28 @@
       "lead": "From concept to execution, we handle every technical detail so you can focus on your audience."
     },
     "stats": {
-      "num0": "500", "label0": "Events Produced Nationwide",
-      "num1": "50",  "label1": "Specialized Employees",
-      "num2": "15",  "label2": "Years of Expertise",
-      "num3": "100", "label3": "Client Satisfaction"
+      "num0": "500",
+      "label0": "Events Produced Nationwide",
+      "num1": "50",
+      "label1": "Specialized Employees",
+      "num2": "15",
+      "label2": "Years of Expertise",
+      "num3": "100",
+      "label3": "Client Satisfaction"
     },
     "capabilities": [
-      "LED Video Walls", "Live Streaming", "Stage Design", "Sound Engineering",
-      "Lighting Design", "Broadcast AV", "Hybrid Events", "Event Technology",
-      "Projection Mapping", "Digital Signage", "Crew Management", "Technical Direction"
+      "LED Video Walls",
+      "Live Streaming",
+      "Stage Design",
+      "Sound Engineering",
+      "Lighting Design",
+      "Broadcast AV",
+      "Hybrid Events",
+      "Event Technology",
+      "Projection Mapping",
+      "Digital Signage",
+      "Crew Management",
+      "Technical Direction"
     ],
     "partner": {
       "eyebrow": "Your Ally",
@@ -38,10 +51,22 @@
       "eyebrow": "How We Work",
       "heading": "Simple Process.",
       "heading_accent": "Flawless Execution.",
-      "step0": { "title": "Consult",  "body": "We deep-dive into your goals, venue, and audience to scope the perfect production plan." },
-      "step1": { "title": "Plan",     "body": "Detailed logistics, crew scheduling, tech riders, and vendor coordination — all handled." },
-      "step2": { "title": "Execute",  "body": "Show day is ours to manage. Your team focuses on the message; we handle everything technical." },
-      "step3": { "title": "Deliver",  "body": "Post-event reporting, asset delivery, and debrief to make the next one even better." }
+      "step0": {
+        "title": "Consult",
+        "body": "We deep-dive into your goals, venue, and audience to scope the perfect production plan."
+      },
+      "step1": {
+        "title": "Plan",
+        "body": "Detailed logistics, crew scheduling, tech riders, and vendor coordination — all handled."
+      },
+      "step2": {
+        "title": "Execute",
+        "body": "Show day is ours to manage. Your team focuses on the message; we handle everything technical."
+      },
+      "step3": {
+        "title": "Deliver",
+        "body": "Post-event reporting, asset delivery, and debrief to make the next one even better."
+      }
     },
     "technology": {
       "eyebrow": "Capabilities",
@@ -61,26 +86,52 @@
       "heading": "We're in the Business of",
       "heading_accent": "Unforgettable Events",
       "lead": "Industry veterans. Future-forward thinkers. Your dedicated production ally.",
-      "image": "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=1920&q=85&fit=crop&crop=top"
+      "image": "/images/1775771513640-aes-isolate-2.png"
     },
     "pullquote": "We seek to partner and form symbiotic relationships with our clients that help them achieve real goals",
     "philosophy": {
       "eyebrow": "Our Philosophy",
       "title": "Our Philosophy",
       "body": "We know that in this ever competitive marketplace finding consistency while maintaining forward thinking innovation is a necessity. Our mission and expertise is in providing the infrastructure and solutions required to meet your goals. We achieve this by finding the unique challenges that you face and dedicating our knowledge and resources to correcting them.",
-      "checklist": ["Consultation", "Show Production Services", "Logistics", "Department Integration"]
+      "checklist": [
+        "Consultation",
+        "Show Production Services",
+        "Logistics",
+        "Department Integration"
+      ]
     },
     "team": {
       "eyebrow": "Our People",
       "title": "Our Team",
       "body": "Our group is comprised of industry veterans. We lean on the expertise of a number of individuals who have seen and done it all. More importantly, we are passionate about the future of the Meetings & Events industry.",
       "sidebody": "We hold a strong belief and vision in being the tip of the spear when it comes to the next evolution in live events and meetings technology. Our network spans the country, and our standards remain consistently high.",
-      "checklist": ["Experience", "Strategic Partners", "Nationwide Network", "Relationships With Excellence"],
+      "checklist": [
+        "Experience",
+        "Strategic Partners",
+        "Nationwide Network",
+        "Relationships With Excellence"
+      ],
       "cards": [
-        { "name": "Leadership",  "role": "Production Directors", "desc": "Seasoned event professionals guiding every production with precision." },
-        { "name": "Technical",   "role": "AV Specialists",       "desc": "Certified engineers and technicians delivering flawless execution on site." },
-        { "name": "Creative",    "role": "Design & Digital",     "desc": "Visual storytellers who bring your brand to life on every screen." },
-        { "name": "Operations",  "role": "Logistics & PM",       "desc": "Detail-obsessed coordinators who keep every moving part in sync." }
+        {
+          "name": "Leadership",
+          "role": "Production Directors",
+          "desc": "Seasoned event professionals guiding every production with precision."
+        },
+        {
+          "name": "Technical",
+          "role": "AV Specialists",
+          "desc": "Certified engineers and technicians delivering flawless execution on site."
+        },
+        {
+          "name": "Creative",
+          "role": "Design & Digital",
+          "desc": "Visual storytellers who bring your brand to life on every screen."
+        },
+        {
+          "name": "Operations",
+          "role": "Logistics & PM",
+          "desc": "Detail-obsessed coordinators who keep every moving part in sync."
+        }
       ]
     },
     "clients": {
@@ -88,21 +139,40 @@
       "title": "For Our Clients",
       "body": "We are committed to developing your brand and making your show site experience one to remember. We believe in consistency and excellence. Our team is ready to step in and provide an effective means to execute your event and cater to your needs.",
       "image": "https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=900&q=85&fit=crop",
-      "checklist": ["Brand Development", "Third Party Vendor Management", "AV Services", "Digital Services"]
+      "checklist": [
+        "Brand Development",
+        "Third Party Vendor Management",
+        "AV Services",
+        "Digital Services"
+      ]
     },
     "clients_trust": {
       "eyebrow": "Trusted By",
       "heading": "Our",
       "heading_accent": "Clients",
       "lead": "We've proudly served Fortune 500 companies and industry leaders across the country.",
-      "logos": ["Fortune 500 Corp", "Tech Leader", "Global Finance", "Healthcare Group", "Media Co.", "Manufacturing", "Retail Brand", "Consulting Firm"]
+      "logos": [
+        "Fortune 500 Corp",
+        "Tech Leader",
+        "Global Finance",
+        "Healthcare Group",
+        "Media Co.",
+        "Manufacturing",
+        "Retail Brand",
+        "Consulting Firm"
+      ]
     },
     "partners": {
       "eyebrow": "Partnerships",
       "title": "For Our Partners",
       "body": "We look to create partnerships with the organizations that excel in their perspective areas. Leaning on each other to achieve a common goal, we feel that as a cohesive front we can achieve new heights.",
       "image": "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=900&q=85&fit=crop",
-      "checklist": ["Mutually Beneficial Partnerships", "White Labeling", "Department Supplementation", "Technological Support"]
+      "checklist": [
+        "Mutually Beneficial Partnerships",
+        "White Labeling",
+        "Department Supplementation",
+        "Technological Support"
+      ]
     },
     "cta": {
       "eyebrow": "Ready to Work Together?",
@@ -125,19 +195,34 @@
         "title": "Project Management",
         "body": "Hands-on production oversight that starts before the first call and ends after the final wrap. We are your dedicated point of contact, managing every vendor, timeline, and contingency so your team can stay focused on the content and the audience.",
         "image": "https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=900&q=85&fit=crop",
-        "items": ["Vendor Management & Procurement", "Branding & Show Identity", "Logistics & Shipping Coordination", "Budget Tracking & Reporting", "On-site Production Management", "Post-event Debrief & Analysis"]
+        "items": [
+          "Vendor Management",
+          "Branding",
+          "Logistics",
+          "Much More"
+        ]
       },
       {
         "title": "Audio Visual & Labor",
         "body": "From intimate corporate meetings to massive trade show floors, we deploy state-of-the-art equipment and a highly skilled crew to deliver an exceptional production experience every time.",
         "image": "https://images.unsplash.com/photo-1470229722913-7c0e2dbbafd3?w=900&q=85&fit=crop",
-        "items": ["LED Video Wall Solutions", "Professional Sound Reinforcement", "Theatrical & Architectural Lighting", "Stage Design & Scenic Elements", "Certified Technical Crew", "Equipment Rental & Logistics"]
+        "items": [
+          "Vendor Solutions",
+          "Showcase",
+          "LED Solutions",
+          "Much More"
+        ]
       },
       {
         "title": "Digital Services & Labor",
         "body": "Today's events live far beyond the room. We connect your in-person production to digital audiences with cutting-edge streaming, signage, and interactive technology — seamlessly integrated into your overall event experience.",
         "image": "https://images.unsplash.com/photo-1547082299-de196ea013d6?w=900&q=85&fit=crop",
-        "items": ["Live Streaming & Broadcast Production", "Hybrid Event Platform Integration", "Presentation Management", "Digital Signage Solutions", "Capture, Recording & Post-production", "Projection Mapping"]
+        "items": [
+          "Presentation Management",
+          "Digital Signage Solutions",
+          "Capture & Streaming",
+          "Much More"
+        ]
       }
     ],
     "tech": {
