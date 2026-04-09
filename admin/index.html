@@ -75,6 +75,16 @@
     .list-add { display: inline-flex; align-items: center; gap: 4px; padding: 7px 14px; background: none; border: 1.5px dashed #cbd5e1; border-radius: 6px; color: #64748b; font-size: 13px; cursor: pointer; margin-top: 4px; }
     .list-add:hover { border-color: var(--cyan); color: var(--cyan); }
 
+    /* ── IMAGE WIDGET ── */
+    .img-url-row { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; }
+    .img-url-row .field-input { flex: 1; }
+    .img-actions { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+    .img-preview { width: 90px; height: 60px; object-fit: cover; border-radius: 6px; border: 1.5px solid #e2e8f0; background: #f8fafc; display: none; }
+    .img-upload-btn { display: inline-flex; align-items: center; gap: 6px; padding: 8px 14px; background: #fff; border: 1.5px solid #e2e8f0; border-radius: 6px; cursor: pointer; font-size: 13px; color: #64748b; font-family: inherit; transition: border-color .15s, color .15s; white-space: nowrap; }
+    .img-upload-btn:hover { border-color: var(--cyan); color: var(--cyan); }
+    .img-upload-btn:disabled { opacity: .5; cursor: not-allowed; }
+    .img-status { font-size: 12px; color: #22c55e; font-weight: 500; }
+
     /* ── TOAST ── */
     #toast-wrap { position: fixed; bottom: 24px; right: 24px; z-index: 9999; display: flex; flex-direction: column; gap: 8px; pointer-events: none; }
     .toast { padding: 12px 18px; border-radius: 8px; font-size: 14px; font-weight: 500; box-shadow: 0 4px 16px rgba(0,0,0,.15); opacity: 0; transform: translateY(8px); transition: all .2s; }
@@ -144,7 +154,7 @@ var SCHEMA = [
     { id: 'home_hero', label: 'Hero', fields: [
       { key: 'home.hero.eyebrow',  label: 'Eyebrow Label',        type: 'text'     },
       { key: 'home.hero.subtitle', label: 'Subtitle',             type: 'textarea' },
-      { key: 'home.hero.image',    label: 'Background Image URL', type: 'text'     },
+      { key: 'home.hero.image',    label: 'Background Image', type: 'image'     },
     ]},
     { id: 'home_services', label: 'Services Section', fields: [
       { key: 'home.services.eyebrow',        label: 'Eyebrow Label',             type: 'text'     },
@@ -166,7 +176,7 @@ var SCHEMA = [
       { key: 'home.partner.eyebrow', label: 'Eyebrow Label', type: 'text'     },
       { key: 'home.partner.title',   label: 'Heading',       type: 'text'     },
       { key: 'home.partner.body',    label: 'Body Text',     type: 'textarea' },
-      { key: 'home.partner.image',   label: 'Image URL',     type: 'text'     },
+      { key: 'home.partner.image',   label: 'Image',         type: 'image'},
     ]},
     { id: 'home_process', label: 'How We Work', fields: [
       { key: 'home.process.eyebrow',        label: 'Eyebrow Label',           type: 'text'     },
@@ -213,7 +223,7 @@ var SCHEMA = [
       { key: 'company.hero.heading',        label: 'Heading (main part)',      type: 'text'     },
       { key: 'company.hero.heading_accent', label: 'Heading (gradient words)', type: 'text'     },
       { key: 'company.hero.lead',           label: 'Lead Text',                type: 'textarea' },
-      { key: 'company.hero.image',          label: 'Image URL',                type: 'text'     },
+      { key: 'company.hero.image',          label: 'Image',                    type: 'image'},
     ]},
     { id: 'co_quote', label: 'Pull Quote', fields: [
       { key: 'company.pullquote', label: 'Quote Text', type: 'textarea' },
@@ -235,7 +245,7 @@ var SCHEMA = [
       { key: 'company.clients.eyebrow',   label: 'Eyebrow Label', type: 'text'     },
       { key: 'company.clients.title',     label: 'Heading',       type: 'text'     },
       { key: 'company.clients.body',      label: 'Body Text',     type: 'textarea' },
-      { key: 'company.clients.image',     label: 'Image URL',     type: 'text'     },
+      { key: 'company.clients.image',     label: 'Image',         type: 'image'},
       { key: 'company.clients.checklist', label: 'Checklist',     type: 'list'     },
     ]},
     { id: 'co_trust', label: '"Trusted By" Section', fields: [
@@ -256,7 +266,7 @@ var SCHEMA = [
       { key: 'company.partners.eyebrow',   label: 'Eyebrow Label', type: 'text'     },
       { key: 'company.partners.title',     label: 'Heading',       type: 'text'     },
       { key: 'company.partners.body',      label: 'Body Text',     type: 'textarea' },
-      { key: 'company.partners.image',     label: 'Image URL',     type: 'text'     },
+      { key: 'company.partners.image',     label: 'Image',         type: 'image'},
       { key: 'company.partners.checklist', label: 'Checklist',     type: 'list'     },
     ]},
     { id: 'co_cta', label: 'CTA Section', fields: [
@@ -278,19 +288,19 @@ var SCHEMA = [
     { id: 'sol_c1', label: 'Card 1: Project Mgmt', fields: [
       { key: 'solutions.cards.0.title', label: 'Title',        type: 'text'     },
       { key: 'solutions.cards.0.body',  label: 'Body Text',    type: 'textarea' },
-      { key: 'solutions.cards.0.image', label: 'Image URL',    type: 'text'     },
+      { key: 'solutions.cards.0.image', label: 'Image',        type: 'image'},
       { key: 'solutions.cards.0.items', label: 'Feature List', type: 'list'     },
     ]},
     { id: 'sol_c2', label: 'Card 2: Audio Visual', fields: [
       { key: 'solutions.cards.1.title', label: 'Title',        type: 'text'     },
       { key: 'solutions.cards.1.body',  label: 'Body Text',    type: 'textarea' },
-      { key: 'solutions.cards.1.image', label: 'Image URL',    type: 'text'     },
+      { key: 'solutions.cards.1.image', label: 'Image',        type: 'image'},
       { key: 'solutions.cards.1.items', label: 'Feature List', type: 'list'     },
     ]},
     { id: 'sol_c3', label: 'Card 3: Digital Services', fields: [
       { key: 'solutions.cards.2.title', label: 'Title',        type: 'text'     },
       { key: 'solutions.cards.2.body',  label: 'Body Text',    type: 'textarea' },
-      { key: 'solutions.cards.2.image', label: 'Image URL',    type: 'text'     },
+      { key: 'solutions.cards.2.image', label: 'Image',        type: 'image'},
       { key: 'solutions.cards.2.items', label: 'Feature List', type: 'list'     },
     ]},
     { id: 'sol_tech', label: 'Technology Banner', fields: [
@@ -316,7 +326,7 @@ var SCHEMA = [
       { key: 'contact.emails.sales',   label: 'Sales Email',   type: 'text'     },
       { key: 'contact.emails.info',    label: 'General Email', type: 'text'     },
       { key: 'contact.emails.support', label: 'Support Email', type: 'text'     },
-      { key: 'contact.image',          label: 'Photo URL',     type: 'text'     },
+      { key: 'contact.image',          label: 'Photo',         type: 'image'},
     ]},
     { id: 'contact_accordion', label: 'Accordion Sections', fields: [
       { key: 'contact.accordion.sales_title',   label: 'Sales — Title',       type: 'text'     },
@@ -341,7 +351,7 @@ var SCHEMA = [
       { key: 'quote.hero.lead',           label: 'Hero Lead Text',           type: 'textarea' },
       { key: 'quote.formAction',          label: 'Form Action URL',          type: 'text',
         hint: 'Formspree endpoint, e.g. https://formspree.io/f/yourID — or mailto:you@email.com as fallback' },
-      { key: 'quote.image',               label: 'Hero Image URL',           type: 'text'     },
+      { key: 'quote.image',               label: 'Hero Image',               type: 'image'},
     ]},
   ]},
   { group: 'Global / Settings', sections: [
@@ -513,6 +523,8 @@ function renderFields(sec) {
       ta.value = dGet(_data, f.key) || '';
       ta.addEventListener('input', function() { dSet(_data, f.key, ta.value); });
       group.appendChild(ta);
+    } else if (f.type === 'image') {
+      group.appendChild(makeImageField(f.key));
     } else {
       var inp2 = document.createElement('input');
       inp2.type = 'text';
@@ -560,6 +572,100 @@ function makeList(key) {
     wrap.appendChild(add);
   }
   redraw();
+  return wrap;
+}
+
+// ─── IMAGE FIELD ─────────────────────────────────────────────────────────────
+function makeImageField(key) {
+  var wrap = document.createElement('div');
+  var currentVal = dGet(_data, key) || '';
+
+  // URL row
+  var urlRow = document.createElement('div');
+  urlRow.className = 'img-url-row';
+  var urlInp = document.createElement('input');
+  urlInp.type = 'text';
+  urlInp.className = 'field-input';
+  urlInp.placeholder = 'Paste URL or upload a photo below';
+  urlInp.value = currentVal;
+
+  // Preview + upload row
+  var actions = document.createElement('div');
+  actions.className = 'img-actions';
+
+  var preview = document.createElement('img');
+  preview.className = 'img-preview';
+  if (currentVal) { preview.src = currentVal; preview.style.display = 'block'; }
+  preview.onerror = function() { this.style.display = 'none'; };
+
+  var status = document.createElement('span');
+  status.className = 'img-status';
+
+  var fileInp = document.createElement('input');
+  fileInp.type = 'file';
+  fileInp.accept = 'image/*';
+  fileInp.style.display = 'none';
+
+  var uploadBtn = document.createElement('label');
+  uploadBtn.className = 'img-upload-btn';
+  uploadBtn.innerHTML = '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg> Upload photo';
+  uploadBtn.appendChild(fileInp);
+
+  function setVal(v) {
+    urlInp.value = v;
+    dSet(_data, key, v);
+    if (v) { preview.src = v; preview.style.display = 'block'; }
+    else preview.style.display = 'none';
+  }
+
+  urlInp.addEventListener('input', function() { setVal(urlInp.value); });
+
+  fileInp.addEventListener('change', function() {
+    var file = fileInp.files[0];
+    if (!file) return;
+    var token = lsGet('aes_token');
+    if (!token) { showToast('Add your GitHub token in API Settings first', 'error'); return; }
+
+    status.textContent = 'Uploading\u2026';
+    uploadBtn.style.pointerEvents = 'none';
+    uploadBtn.style.opacity = '0.5';
+
+    var reader = new FileReader();
+    reader.onload = function(e) {
+      var b64 = e.target.result.split(',')[1];
+      var safe = file.name.replace(/[^a-zA-Z0-9._-]/g, '-').toLowerCase();
+      var repoPath = 'images/' + Date.now() + '-' + safe;
+      var hdrs = {
+        'Accept': 'application/vnd.github+json',
+        'Authorization': 'Bearer ' + token,
+        'X-GitHub-Api-Version': '2022-11-28',
+        'Content-Type': 'application/json'
+      };
+      fetch('https://api.github.com/repos/' + GH_OWNER + '/' + GH_REPO + '/contents/' + repoPath, {
+        method: 'PUT', headers: hdrs,
+        body: JSON.stringify({ message: 'Upload image via CMS: ' + safe, content: b64 })
+      })
+      .then(function(r) {
+        if (!r.ok) return r.json().then(function(d) { throw new Error(d.message || r.status); });
+        return r.json();
+      })
+      .then(function() {
+        setVal('/' + repoPath);
+        status.textContent = '\u2713 Uploaded — publish to go live';
+        setTimeout(function() { status.textContent = ''; }, 6000);
+      })
+      .catch(function(err) { showToast('Upload failed: ' + err.message, 'error'); status.textContent = ''; })
+      .finally(function() { uploadBtn.style.pointerEvents = ''; uploadBtn.style.opacity = ''; fileInp.value = ''; });
+    };
+    reader.readAsDataURL(file);
+  });
+
+  urlRow.appendChild(urlInp);
+  actions.appendChild(preview);
+  actions.appendChild(uploadBtn);
+  actions.appendChild(status);
+  wrap.appendChild(urlRow);
+  wrap.appendChild(actions);
   return wrap;
 }
 
