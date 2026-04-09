@@ -8,5 +8,157 @@
 </head>
 <body>
   <script src="https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.js"></script>
+  <script>
+    CMS.init({ config: {
+      backend: {
+        name: 'github',
+        repo: 'cluemom/aeswebsite',
+        branch: 'main',
+        base_url: 'https://aes-oauth.onrender.com',
+      },
+      media_folder: 'images',
+      public_folder: '/images',
+      collections: [{
+        name: 'pages',
+        label: 'Site Content',
+        files: [{
+          name: 'content',
+          label: 'All Pages',
+          file: 'content.json',
+          fields: [
+
+            // GLOBAL
+            { label: 'Global', name: 'global', widget: 'object', fields: [
+              { label: 'Phone',          name: 'phone',   widget: 'string' },
+              { label: 'Email',          name: 'email',   widget: 'string' },
+              { label: 'Website',        name: 'website', widget: 'string' },
+              { label: 'Footer Tagline', name: 'tagline', widget: 'text'   },
+            ]},
+
+            // HOME
+            { label: 'Home Page', name: 'home', widget: 'object', fields: [
+              { label: 'Hero', name: 'hero', widget: 'object', fields: [
+                { label: 'Subtitle',         name: 'subtitle', widget: 'text' },
+                { label: 'Background Image', name: 'image',    widget: 'image', required: false },
+              ]},
+              { label: 'Services Section', name: 'services', widget: 'object', fields: [
+                { label: 'Lead Text', name: 'lead', widget: 'text' },
+              ]},
+              { label: 'Stats Strip', name: 'stats', widget: 'object', fields: [
+                { label: 'Stat 1', name: 'label0', widget: 'string' },
+                { label: 'Stat 2', name: 'label1', widget: 'string' },
+                { label: 'Stat 3', name: 'label2', widget: 'string' },
+                { label: 'Stat 4', name: 'label3', widget: 'string' },
+              ]},
+              { label: 'Your Ally Section', name: 'partner', widget: 'object', fields: [
+                { label: 'Heading', name: 'title', widget: 'string' },
+                { label: 'Body',    name: 'body',  widget: 'text'   },
+                { label: 'Image',   name: 'image', widget: 'image', required: false },
+              ]},
+              { label: 'How We Work', name: 'process', widget: 'object', fields: [
+                { label: 'Step 1', name: 'step0', widget: 'object', fields: [
+                  { label: 'Title', name: 'title', widget: 'string' },
+                  { label: 'Body',  name: 'body',  widget: 'text'   },
+                ]},
+                { label: 'Step 2', name: 'step1', widget: 'object', fields: [
+                  { label: 'Title', name: 'title', widget: 'string' },
+                  { label: 'Body',  name: 'body',  widget: 'text'   },
+                ]},
+                { label: 'Step 3', name: 'step2', widget: 'object', fields: [
+                  { label: 'Title', name: 'title', widget: 'string' },
+                  { label: 'Body',  name: 'body',  widget: 'text'   },
+                ]},
+                { label: 'Step 4', name: 'step3', widget: 'object', fields: [
+                  { label: 'Title', name: 'title', widget: 'string' },
+                  { label: 'Body',  name: 'body',  widget: 'text'   },
+                ]},
+              ]},
+              { label: 'Technology Section', name: 'technology', widget: 'object', fields: [
+                { label: 'Heading', name: 'title', widget: 'string' },
+                { label: 'Body',    name: 'body',  widget: 'text'   },
+              ]},
+              { label: 'CTA Section', name: 'reach', widget: 'object', fields: [
+                { label: 'Body Text', name: 'body', widget: 'text' },
+              ]},
+            ]},
+
+            // COMPANY
+            { label: 'Company Page', name: 'company', widget: 'object', fields: [
+              { label: 'Hero', name: 'hero', widget: 'object', fields: [
+                { label: 'Lead Text', name: 'lead',  widget: 'text' },
+                { label: 'Image',     name: 'image', widget: 'image', required: false },
+              ]},
+              { label: 'Pull Quote', name: 'pullquote', widget: 'text' },
+              { label: 'Our Philosophy', name: 'philosophy', widget: 'object', fields: [
+                { label: 'Heading',   name: 'title',     widget: 'string' },
+                { label: 'Body',      name: 'body',      widget: 'text'   },
+                { label: 'Checklist', name: 'checklist', widget: 'list', field: { label: 'Item', widget: 'string' } },
+              ]},
+              { label: 'Our Team', name: 'team', widget: 'object', fields: [
+                { label: 'Heading',   name: 'title',    widget: 'string' },
+                { label: 'Lead Text', name: 'body',     widget: 'text'   },
+                { label: 'Side Body', name: 'sidebody', widget: 'text'   },
+                { label: 'Team Cards', name: 'cards', widget: 'list', fields: [
+                  { label: 'Name',        name: 'name', widget: 'string' },
+                  { label: 'Role',        name: 'role', widget: 'string' },
+                  { label: 'Description', name: 'desc', widget: 'text'   },
+                ]},
+              ]},
+              { label: 'For Our Clients', name: 'clients', widget: 'object', fields: [
+                { label: 'Heading',   name: 'title',     widget: 'string' },
+                { label: 'Body',      name: 'body',      widget: 'text'   },
+                { label: 'Image',     name: 'image',     widget: 'image', required: false },
+                { label: 'Checklist', name: 'checklist', widget: 'list', field: { label: 'Item', widget: 'string' } },
+              ]},
+              { label: 'For Our Partners', name: 'partners', widget: 'object', fields: [
+                { label: 'Heading',   name: 'title',     widget: 'string' },
+                { label: 'Body',      name: 'body',      widget: 'text'   },
+                { label: 'Image',     name: 'image',     widget: 'image', required: false },
+                { label: 'Checklist', name: 'checklist', widget: 'list', field: { label: 'Item', widget: 'string' } },
+              ]},
+              { label: 'CTA Section', name: 'cta', widget: 'object', fields: [
+                { label: 'Body', name: 'body', widget: 'text' },
+              ]},
+            ]},
+
+            // CLIENT SOLUTIONS
+            { label: 'Client Solutions', name: 'solutions', widget: 'object', fields: [
+              { label: 'Page Intro', name: 'intro', widget: 'object', fields: [
+                { label: 'Lead Text', name: 'body', widget: 'text' },
+              ]},
+              { label: 'Service Cards', name: 'cards', widget: 'list', fields: [
+                { label: 'Title', name: 'title', widget: 'string' },
+                { label: 'Body',  name: 'body',  widget: 'text'   },
+                { label: 'Image', name: 'image', widget: 'image', required: false },
+                { label: 'Feature List', name: 'items', widget: 'list', field: { label: 'Item', widget: 'string' } },
+              ]},
+              { label: 'Technology Banner', name: 'tech', widget: 'object', fields: [
+                { label: 'Heading', name: 'title', widget: 'string' },
+                { label: 'Body',    name: 'body',  widget: 'text'   },
+              ]},
+              { label: 'CTA Section', name: 'cta', widget: 'object', fields: [
+                { label: 'Body', name: 'body', widget: 'text' },
+              ]},
+            ]},
+
+            // CONTACT
+            { label: 'Contact', name: 'contact', widget: 'object', fields: [
+              { label: 'Intro Text', name: 'intro', widget: 'text' },
+              { label: 'Emails', name: 'emails', widget: 'object', fields: [
+                { label: 'Sales Email',   name: 'sales',   widget: 'string' },
+                { label: 'General Email', name: 'info',    widget: 'string' },
+                { label: 'Support Email', name: 'support', widget: 'string' },
+              ]},
+              { label: 'Photo',       name: 'image', widget: 'image', required: false },
+              { label: 'CTA Section', name: 'cta',   widget: 'object', fields: [
+                { label: 'Body', name: 'body', widget: 'text' },
+              ]},
+            ]},
+
+          ]
+        }]
+      }]
+    }});
+  </script>
 </body>
 </html>
