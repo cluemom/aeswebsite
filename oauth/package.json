@@ -1,0 +1,12 @@
+{
+  "name": "aes-oauth",
+  "version": "1.0.0",
+  "description": "GitHub OAuth proxy for AES Decap CMS",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}
