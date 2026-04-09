@@ -7,10 +7,14 @@
   },
   "home": {
     "hero": {
+      "eyebrow": "Live Event Technology Partner",
       "subtitle": "Audio visual production, project management, and digital services for events that demand excellence.",
       "image": "https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=1920&q=85&fit=crop"
     },
     "services": {
+      "eyebrow": "What We Do",
+      "heading": "End-to-End",
+      "heading_accent": "Event Solutions",
       "lead": "From concept to execution, we handle every technical detail so you can focus on your audience."
     },
     "stats": {
@@ -19,108 +23,100 @@
       "num2": "15",  "label2": "Years of Expertise",
       "num3": "100", "label3": "Client Satisfaction"
     },
+    "capabilities": [
+      "LED Video Walls", "Live Streaming", "Stage Design", "Sound Engineering",
+      "Lighting Design", "Broadcast AV", "Hybrid Events", "Event Technology",
+      "Projection Mapping", "Digital Signage", "Crew Management", "Technical Direction"
+    ],
     "partner": {
+      "eyebrow": "Your Ally",
       "title": "Your partner, your ally",
       "body": "We are committed to ensuring your attendees' experience goes better than expected. No matter what role we play within a given event, our partners and staff will go above and beyond to make your production a success.",
       "image": "https://images.unsplash.com/photo-1470229722913-7c0e2dbbafd3?w=900&q=85&fit=crop"
     },
     "process": {
-      "step0": {
-        "title": "Consult",
-        "body": "We deep-dive into your goals, venue, and audience to scope the perfect production plan."
-      },
-      "step1": {
-        "title": "Plan",
-        "body": "Detailed logistics, crew scheduling, tech riders, and vendor coordination — all handled."
-      },
-      "step2": {
-        "title": "Execute",
-        "body": "Show day is ours to manage. Your team focuses on the message; we handle everything technical."
-      },
-      "step3": {
-        "title": "Deliver",
-        "body": "Post-event reporting, asset delivery, and debrief to make the next one even better."
-      }
+      "eyebrow": "How We Work",
+      "heading": "Simple Process.",
+      "heading_accent": "Flawless Execution.",
+      "step0": { "title": "Consult",  "body": "We deep-dive into your goals, venue, and audience to scope the perfect production plan." },
+      "step1": { "title": "Plan",     "body": "Detailed logistics, crew scheduling, tech riders, and vendor coordination — all handled." },
+      "step2": { "title": "Execute",  "body": "Show day is ours to manage. Your team focuses on the message; we handle everything technical." },
+      "step3": { "title": "Deliver",  "body": "Post-event reporting, asset delivery, and debrief to make the next one even better." }
     },
     "technology": {
+      "eyebrow": "Capabilities",
       "title": "Commitment to technology",
       "body": "We are looking to the cutting edge in industry technology. The future of meetings and events involves an alliance of innovative technology, and hard work by the many individuals it takes to put it all together."
     },
     "reach": {
+      "eyebrow": "Ready to Start?",
+      "heading": "Let's Build Something",
+      "heading_accent": "Unforgettable.",
       "body": "Allow us to assist in taking your event to a higher level than previously attained."
     }
   },
   "company": {
     "hero": {
+      "eyebrow": "About Us",
+      "heading": "We're in the Business of",
+      "heading_accent": "Unforgettable Events",
       "lead": "Industry veterans. Future-forward thinkers. Your dedicated production ally.",
       "image": "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=1920&q=85&fit=crop&crop=top"
     },
     "pullquote": "We seek to partner and form symbiotic relationships with our clients that help them achieve real goals",
     "philosophy": {
+      "eyebrow": "Our Philosophy",
       "title": "Our Philosophy",
       "body": "We know that in this ever competitive marketplace finding consistency while maintaining forward thinking innovation is a necessity. Our mission and expertise is in providing the infrastructure and solutions required to meet your goals. We achieve this by finding the unique challenges that you face and dedicating our knowledge and resources to correcting them.",
-      "checklist": [
-        "Consultation",
-        "Show Production Services",
-        "Logistics",
-        "Department Integration"
-      ]
+      "checklist": ["Consultation", "Show Production Services", "Logistics", "Department Integration"]
     },
     "team": {
+      "eyebrow": "Our People",
       "title": "Our Team",
       "body": "Our group is comprised of industry veterans. We lean on the expertise of a number of individuals who have seen and done it all. More importantly, we are passionate about the future of the Meetings & Events industry.",
       "sidebody": "We hold a strong belief and vision in being the tip of the spear when it comes to the next evolution in live events and meetings technology. Our network spans the country, and our standards remain consistently high.",
       "checklist": ["Experience", "Strategic Partners", "Nationwide Network", "Relationships With Excellence"],
       "cards": [
-        {
-          "name": "Leadership",
-          "role": "Production Directors",
-          "desc": "Seasoned event professionals guiding every production with precision."
-        },
-        {
-          "name": "Technical",
-          "role": "AV Specialists",
-          "desc": "Certified engineers and technicians delivering flawless execution on site."
-        },
-        {
-          "name": "Creative",
-          "role": "Design & Digital",
-          "desc": "Visual storytellers who bring your brand to life on every screen."
-        },
-        {
-          "name": "Operations",
-          "role": "Logistics & PM",
-          "desc": "Detail-obsessed coordinators who keep every moving part in sync."
-        }
+        { "name": "Leadership",  "role": "Production Directors", "desc": "Seasoned event professionals guiding every production with precision." },
+        { "name": "Technical",   "role": "AV Specialists",       "desc": "Certified engineers and technicians delivering flawless execution on site." },
+        { "name": "Creative",    "role": "Design & Digital",     "desc": "Visual storytellers who bring your brand to life on every screen." },
+        { "name": "Operations",  "role": "Logistics & PM",       "desc": "Detail-obsessed coordinators who keep every moving part in sync." }
       ]
     },
     "clients": {
+      "eyebrow": "For Our Clients",
       "title": "For Our Clients",
       "body": "We are committed to developing your brand and making your show site experience one to remember. We believe in consistency and excellence. Our team is ready to step in and provide an effective means to execute your event and cater to your needs.",
       "image": "https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=900&q=85&fit=crop",
-      "checklist": [
-        "Brand Development",
-        "Third Party Vendor Management",
-        "AV Services",
-        "Digital Services"
-      ]
+      "checklist": ["Brand Development", "Third Party Vendor Management", "AV Services", "Digital Services"]
+    },
+    "clients_trust": {
+      "eyebrow": "Trusted By",
+      "heading": "Our",
+      "heading_accent": "Clients",
+      "lead": "We've proudly served Fortune 500 companies and industry leaders across the country.",
+      "logos": ["Fortune 500 Corp", "Tech Leader", "Global Finance", "Healthcare Group", "Media Co.", "Manufacturing", "Retail Brand", "Consulting Firm"]
     },
     "partners": {
+      "eyebrow": "Partnerships",
       "title": "For Our Partners",
       "body": "We look to create partnerships with the organizations that excel in their perspective areas. Leaning on each other to achieve a common goal, we feel that as a cohesive front we can achieve new heights.",
       "image": "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=900&q=85&fit=crop",
-      "checklist": [
-        "Mutually Beneficial Partnerships",
-        "White Labeling",
-        "Department Supplementation",
-        "Technological Support"
-      ]
+      "checklist": ["Mutually Beneficial Partnerships", "White Labeling", "Department Supplementation", "Technological Support"]
     },
     "cta": {
+      "eyebrow": "Ready to Work Together?",
+      "heading": "Let's Create Something",
+      "heading_accent": "Extraordinary.",
       "body": "Request a quote or just get in touch — we're ready to make your next event unforgettable."
     }
   },
   "solutions": {
+    "hero": {
+      "eyebrow": "Services",
+      "heading": "Full-Spectrum",
+      "heading_accent": "Event Production"
+    },
     "intro": {
       "body": "We partner with some of the best groups in the industry while maintaining the level of excellence you have come to know."
     },
@@ -145,14 +141,23 @@
       }
     ],
     "tech": {
+      "eyebrow": "Technology",
       "title": "Pushing Event Technologies",
       "body": "We stay on the cutting edge using the best tools available while developing the process and technologies to look forward into the unknown."
     },
     "cta": {
+      "eyebrow": "Ready to Produce Your Event?",
+      "heading": "Let's Build Something",
+      "heading_accent": "Remarkable.",
       "body": "Submit an RFP or get in touch today. Our team is ready to scope and deliver your next production."
     }
   },
   "contact": {
+    "hero": {
+      "eyebrow": "Contact",
+      "heading": "Let's",
+      "heading_accent": "Connect"
+    },
     "intro": "We look forward to hearing from you. Be sure to reach out to us with any inquiries you may have. Our team is ready to make your experience a memorable one.",
     "image": "https://images.unsplash.com/photo-1429962714451-bb934ecdc4ec?w=1920&q=85&fit=crop",
     "emails": {
@@ -160,12 +165,26 @@
       "info": "Info@alliedev.co",
       "support": "support@alliedev.co"
     },
+    "accordion": {
+      "sales_title": "Sales & New Business",
+      "sales_desc": "For sales inquiries, new partnerships, or to discuss upcoming events:",
+      "info_title": "General Information",
+      "info_desc": "For general information about our services or company:",
+      "support_title": "Support",
+      "support_desc": "For support on active engagements or technical assistance:"
+    },
     "cta": {
+      "eyebrow": "Work With Us",
+      "heading": "Ready to",
+      "heading_accent": "Get Started?",
       "body": "Submit a detailed RFP and our team will get back to you within 24 hours."
     }
   },
   "quote": {
     "hero": {
+      "eyebrow": "Get Started",
+      "heading": "Request a",
+      "heading_accent": "Quote",
       "lead": "Send us your project details and we'll get back to you within 24 hours."
     },
     "image": "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=1920&q=85&fit=crop",
