@@ -406,18 +406,42 @@ function doLogout() {
   document.getElementById('pw').value = '';
 }
 
+// ─── DEEP MERGE ──────────────────────────────────────────────────────────────
+// content.json is the base (has all fields + current live values).
+// localStorage holds the client's unpublished edits.
+// Merge: recursively combine objects; arrays and primitives: localStorage wins.
+function mergeDeep(base, override) {
+  var result = JSON.parse(JSON.stringify(base));
+  (function merge(target, src) {
+    Object.keys(src).forEach(function(k) {
+      if (src[k] !== null && typeof src[k] === 'object' && !Array.isArray(src[k]) &&
+          target[k] !== null && typeof target[k] === 'object' && !Array.isArray(target[k])) {
+        merge(target[k], src[k]);
+      } else {
+        target[k] = src[k];
+      }
+    });
+  })(result, override);
+  return result;
+}
+
 // ─── EDITOR START ─────────────────────────────────────────────────────────────
 function startEditor() {
-  var stored = lsGet('aes_content');
-  if (stored) {
-    try { _data = JSON.parse(stored); } catch(e) { _data = {}; }
-    buildNav();
-    return;
-  }
+  // Always fetch content.json so every field is pre-filled with the live value.
+  // Then overlay any unpublished localStorage edits on top.
   fetch('../content.json')
     .then(function(r) { return r.ok ? r.json() : {}; })
     .catch(function()  { return {}; })
-    .then(function(data) { _data = data; buildNav(); });
+    .then(function(base) {
+      var stored = lsGet('aes_content');
+      if (stored) {
+        try { _data = mergeDeep(base, JSON.parse(stored)); }
+        catch(e) { _data = base; }
+      } else {
+        _data = base;
+      }
+      buildNav();
+    });
 }
 
 // ─── SIDEBAR ─────────────────────────────────────────────────────────────────
