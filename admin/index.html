@@ -92,7 +92,7 @@
               { label: 'Our Philosophy', name: 'philosophy', widget: 'object', fields: [
                 { label: 'Heading',   name: 'title',     widget: 'string' },
                 { label: 'Body',      name: 'body',      widget: 'text'   },
-                { label: 'Checklist', name: 'checklist', widget: 'list', field: { label: 'Item', widget: 'string' } },
+                { label: 'Checklist', name: 'checklist', widget: 'list', field: { label: 'Item', name: 'item', widget: 'string' } },
               ]},
               { label: 'Our Team', name: 'team', widget: 'object', fields: [
                 { label: 'Heading',   name: 'title',    widget: 'string' },
@@ -108,13 +108,13 @@
                 { label: 'Heading',   name: 'title',     widget: 'string' },
                 { label: 'Body',      name: 'body',      widget: 'text'   },
                 { label: 'Image',     name: 'image',     widget: 'image', required: false },
-                { label: 'Checklist', name: 'checklist', widget: 'list', field: { label: 'Item', widget: 'string' } },
+                { label: 'Checklist', name: 'checklist', widget: 'list', field: { label: 'Item', name: 'item', widget: 'string' } },
               ]},
               { label: 'For Our Partners', name: 'partners', widget: 'object', fields: [
                 { label: 'Heading',   name: 'title',     widget: 'string' },
                 { label: 'Body',      name: 'body',      widget: 'text'   },
                 { label: 'Image',     name: 'image',     widget: 'image', required: false },
-                { label: 'Checklist', name: 'checklist', widget: 'list', field: { label: 'Item', widget: 'string' } },
+                { label: 'Checklist', name: 'checklist', widget: 'list', field: { label: 'Item', name: 'item', widget: 'string' } },
               ]},
               { label: 'CTA Section', name: 'cta', widget: 'object', fields: [
                 { label: 'Body', name: 'body', widget: 'text' },
@@ -130,7 +130,7 @@
                 { label: 'Title', name: 'title', widget: 'string' },
                 { label: 'Body',  name: 'body',  widget: 'text'   },
                 { label: 'Image', name: 'image', widget: 'image', required: false },
-                { label: 'Feature List', name: 'items', widget: 'list', field: { label: 'Item', widget: 'string' } },
+                { label: 'Feature List', name: 'items', widget: 'list', field: { label: 'Item', name: 'item', widget: 'string' } },
               ]},
               { label: 'Technology Banner', name: 'tech', widget: 'object', fields: [
                 { label: 'Heading', name: 'title', widget: 'string' },
