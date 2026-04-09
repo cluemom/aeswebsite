@@ -149,10 +149,14 @@ var SCHEMA = [
       { key: 'home.services.lead', label: 'Lead Text', type: 'textarea' },
     ]},
     { id: 'home_stats', label: 'Stats Strip', fields: [
-      { key: 'home.stats.label0', label: 'Stat 1', type: 'text' },
-      { key: 'home.stats.label1', label: 'Stat 2', type: 'text' },
-      { key: 'home.stats.label2', label: 'Stat 3', type: 'text' },
-      { key: 'home.stats.label3', label: 'Stat 4', type: 'text' },
+      { key: 'home.stats.num0',   label: 'Stat 1 — Number', type: 'text' },
+      { key: 'home.stats.label0', label: 'Stat 1 — Label',  type: 'text' },
+      { key: 'home.stats.num1',   label: 'Stat 2 — Number', type: 'text' },
+      { key: 'home.stats.label1', label: 'Stat 2 — Label',  type: 'text' },
+      { key: 'home.stats.num2',   label: 'Stat 3 — Number', type: 'text' },
+      { key: 'home.stats.label2', label: 'Stat 3 — Label',  type: 'text' },
+      { key: 'home.stats.num3',   label: 'Stat 4 — Number', type: 'text' },
+      { key: 'home.stats.label3', label: 'Stat 4 — Label',  type: 'text' },
     ]},
     { id: 'home_partner', label: 'Your Ally Section', fields: [
       { key: 'home.partner.title', label: 'Heading',   type: 'text'     },
@@ -191,9 +195,10 @@ var SCHEMA = [
       { key: 'company.philosophy.checklist', label: 'Checklist', type: 'list'     },
     ]},
     { id: 'co_team', label: 'Our Team', fields: [
-      { key: 'company.team.title',    label: 'Heading',   type: 'text'     },
-      { key: 'company.team.body',     label: 'Lead Text', type: 'textarea' },
-      { key: 'company.team.sidebody', label: 'Side Body', type: 'textarea' },
+      { key: 'company.team.title',     label: 'Heading',        type: 'text'     },
+      { key: 'company.team.body',      label: 'Lead Text',      type: 'textarea' },
+      { key: 'company.team.sidebody',  label: 'Side Body',      type: 'textarea' },
+      { key: 'company.team.checklist', label: 'Checklist Items', type: 'list'    },
     ]},
     { id: 'co_clients', label: 'For Our Clients', fields: [
       { key: 'company.clients.title',     label: 'Heading',   type: 'text'     },
@@ -251,6 +256,14 @@ var SCHEMA = [
     ]},
     { id: 'contact_cta', label: 'CTA Section', fields: [
       { key: 'contact.cta.body', label: 'Body Text', type: 'textarea' },
+    ]},
+  ]},
+  { group: 'Quote Page', sections: [
+    { id: 'quote_page', label: 'Page & Form', fields: [
+      { key: 'quote.hero.lead',  label: 'Hero Lead Text', type: 'textarea' },
+      { key: 'quote.formAction', label: 'Form Action URL', type: 'text',
+        hint: 'Formspree endpoint, e.g. https://formspree.io/f/yourID — or mailto:you@email.com as fallback' },
+      { key: 'quote.image',      label: 'Hero Image URL', type: 'text' },
     ]},
   ]},
   { group: 'Global / Settings', sections: [

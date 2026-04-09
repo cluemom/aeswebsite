@@ -67,6 +67,21 @@
       var v = getPath(content, el.getAttribute('data-cms-val'));
       if (v != null) { el.tagName === 'FORM' ? (el.action = v) : (el.value = v); }
     });
+    document.querySelectorAll('[data-cms-list]').forEach(function (el) {
+      var arr = getPath(content, el.getAttribute('data-cms-list'));
+      if (Array.isArray(arr)) {
+        el.innerHTML = '';
+        arr.forEach(function (item) {
+          var li = document.createElement('li');
+          li.textContent = item;
+          el.appendChild(li);
+        });
+      }
+    });
+    document.querySelectorAll('[data-cms-count]').forEach(function (el) {
+      var v = getPath(content, el.getAttribute('data-cms-count'));
+      if (v != null) { el.textContent = v; el.setAttribute('data-target', v); }
+    });
   }
 
   async function init() {

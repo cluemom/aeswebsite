@@ -14,10 +14,10 @@
       "lead": "From concept to execution, we handle every technical detail so you can focus on your audience."
     },
     "stats": {
-      "label0": "Events Produced Nationwide",
-      "label1": "Specialized Employees",
-      "label2": "Years of Expertise",
-      "label3": "Client Satisfaction"
+      "num0": "500", "label0": "Events Produced Nationwide",
+      "num1": "50",  "label1": "Specialized Employees",
+      "num2": "15",  "label2": "Years of Expertise",
+      "num3": "100", "label3": "Client Satisfaction"
     },
     "partner": {
       "title": "Your partner, your ally",
@@ -70,6 +70,7 @@
       "title": "Our Team",
       "body": "Our group is comprised of industry veterans. We lean on the expertise of a number of individuals who have seen and done it all. More importantly, we are passionate about the future of the Meetings & Events industry.",
       "sidebody": "We hold a strong belief and vision in being the tip of the spear when it comes to the next evolution in live events and meetings technology. Our network spans the country, and our standards remain consistently high.",
+      "checklist": ["Experience", "Strategic Partners", "Nationwide Network", "Relationships With Excellence"],
       "cards": [
         {
           "name": "Leadership",
@@ -128,34 +129,19 @@
         "title": "Project Management",
         "body": "Hands-on production oversight that starts before the first call and ends after the final wrap. We are your dedicated point of contact, managing every vendor, timeline, and contingency so your team can stay focused on the content and the audience.",
         "image": "https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=900&q=85&fit=crop",
-        "items": [
-          "Vendor Management",
-          "Branding",
-          "Logistics",
-          "Much More"
-        ]
+        "items": ["Vendor Management & Procurement", "Branding & Show Identity", "Logistics & Shipping Coordination", "Budget Tracking & Reporting", "On-site Production Management", "Post-event Debrief & Analysis"]
       },
       {
         "title": "Audio Visual & Labor",
         "body": "From intimate corporate meetings to massive trade show floors, we deploy state-of-the-art equipment and a highly skilled crew to deliver an exceptional production experience every time.",
         "image": "https://images.unsplash.com/photo-1470229722913-7c0e2dbbafd3?w=900&q=85&fit=crop",
-        "items": [
-          "Vendor Solutions",
-          "Showcase",
-          "LED Solutions",
-          "Much More"
-        ]
+        "items": ["LED Video Wall Solutions", "Professional Sound Reinforcement", "Theatrical & Architectural Lighting", "Stage Design & Scenic Elements", "Certified Technical Crew", "Equipment Rental & Logistics"]
       },
       {
         "title": "Digital Services & Labor",
         "body": "Today's events live far beyond the room. We connect your in-person production to digital audiences with cutting-edge streaming, signage, and interactive technology — seamlessly integrated into your overall event experience.",
         "image": "https://images.unsplash.com/photo-1547082299-de196ea013d6?w=900&q=85&fit=crop",
-        "items": [
-          "Presentation Management",
-          "Digital Signage Solutions",
-          "Capture & Streaming",
-          "Much More"
-        ]
+        "items": ["Live Streaming & Broadcast Production", "Hybrid Event Platform Integration", "Presentation Management", "Digital Signage Solutions", "Capture, Recording & Post-production", "Projection Mapping"]
       }
     ],
     "tech": {
@@ -179,6 +165,9 @@
     }
   },
   "quote": {
+    "hero": {
+      "lead": "Send us your project details and we'll get back to you within 24 hours."
+    },
     "image": "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=1920&q=85&fit=crop",
     "formAction": "https://formspree.io/f/YOUR_FORM_ID"
   }
